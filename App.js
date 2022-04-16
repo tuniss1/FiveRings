@@ -4,6 +4,7 @@ import MapView from "react-native-maps";
 import { Provider as PaperProvider } from "react-native-paper";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import NailScreen from "screens/NailScreen";
+import MainScreen from "screens/MainScreen";
 
 const App = () => {
   const [coordinates, setCoordinates] = useState({
@@ -15,7 +16,7 @@ const App = () => {
 
   return (
     <PaperProvider>
-      <NailScreen />
+      <MainScreen />
     </PaperProvider>
   );
 };
