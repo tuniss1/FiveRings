@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { StyleSheet, View, Dimensions } from "react-native";
 import MapView from "react-native-maps";
 import { Provider as PaperProvider } from "react-native-paper";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import NailScreen from "screens/NailScreen";
 
 const App = () => {
   const [coordinates, setCoordinates] = useState({
@@ -13,9 +15,7 @@ const App = () => {
 
   return (
     <PaperProvider>
-      <View style={styles.container}>
-        <MapView style={styles.map} region={coordinates} />
-      </View>
+      <NailScreen />
     </PaperProvider>
   );
 };
