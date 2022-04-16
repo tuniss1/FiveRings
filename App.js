@@ -1,36 +1,13 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Dimensions } from "react-native";
-import MapView from "react-native-maps";
+import React from "react";
 import { Provider as PaperProvider } from "react-native-paper";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import NailScreen from "screens/NailScreen";
+import ItemScreen from "screens/ItemScreen";
 
 const App = () => {
-  const [coordinates, setCoordinates] = useState({
-    latitude: 10.3596469,
-    longitude: 107.0968701,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
-  });
-
   return (
     <PaperProvider>
-      <NailScreen />
+      <ItemScreen />
     </PaperProvider>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  map: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height,
-  },
-});
 
 export default App;
