@@ -1,20 +1,36 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from "react";
+import { StyleSheet, View, Dimensions } from "react-native";
+import MapView from "react-native-maps";
+import { Provider as PaperProvider } from "react-native-paper";
 
-export default function App() {
+const App = () => {
+  const [coordinates, setCoordinates] = useState({
+    latitude: 10.3596469,
+    longitude: 107.0968701,
+    latitudeDelta: 0.0922,
+    longitudeDelta: 0.0421,
+  });
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <PaperProvider>
+      <View style={styles.container}>
+        <MapView style={styles.map} region={coordinates} />
+      </View>
+    </PaperProvider>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  map: {
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
   },
 });
+
+export default App;

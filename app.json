@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "air-tag-mobile-app",
-    "slug": "air-tag-mobile-app",
+    "name": "fiverings-app",
+    "slug": "fiverings-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -23,6 +23,12 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.hoainambrvt2001.fiveringsapp",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDxQGxBXYE07Itbe_rBgTETp8c8T9uNNeQ"
+        }
       }
     },
     "web": {
