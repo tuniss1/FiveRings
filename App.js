@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 // import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import NailScreen from "screens/NailScreen";
 import MainScreen from "screens/MainScreen";
+import HomeScreen from "screens/HomeScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -16,11 +17,12 @@ const App = () => {
         <Stack.Navigator
           initialRouteName="Main"
           screenOptions={{
-            header: (props) => <></>,
+            headerShown: false,
           }}
         >
           <Stack.Screen name="Main" component={MainScreen} />
-          <Stack.Screen name="Nail" component={NailScreen} />
+          {/* <Stack.Screen name="Home" component={HomeScreen} /> */}
+          {/* <Stack.Screen name="Nail" component={NailScreen} /> */}
         </Stack.Navigator>
       </NavigationContainer>
     </PaperProvider>

@@ -1,10 +1,10 @@
 import * as React from "react";
 import { BottomNavigation, Text } from "react-native-paper";
-import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import HomeScreen from "./HomeScreen";
 
-const Tab = createMaterialBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
 const MusicRoute = () => <Text>Account</Text>;
 
@@ -28,13 +28,13 @@ const MainScreen = () => {
   };
 
   return (
-    <Tab.Navigator>
+    <Tab.Navigator screenOptions={{ headerShown: false }}>
       {route.map((item) => (
         <Tab.Screen
-          name={item.name}
+          name={item.title}
           component={screenDict[item.key]}
           options={{
-            tabBarLabel: item.name,
+            tabBarLabel: item.title,
             tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons
                 name={item.icon}
