@@ -72,10 +72,17 @@ const Home = ({ navigation }) => {
         snapPoints={snapPoints}
         onChange={handleSheetChanges}
       >
-        <BottomSheetView>
+        <BottomSheetView style={{ marginBottom: -16 }}>
           <View style={{ alignItems: "center", padding: 4 }}>
             <Title>List Items</Title>
           </View>
+          <View
+            style={{
+              height: 1,
+              backgroundColor: "#E7E7E5",
+              opacity: 0.5,
+            }}
+          ></View>
           {/* <BottomSheetFlatList
             // ref={}
             data={CLONE}
@@ -85,9 +92,12 @@ const Home = ({ navigation }) => {
           <FlatList
             data={CLONE}
             keyExtractor={(item) => item.id}
-            renderItem={({ item }) => <Item {...item} />}
+            renderItem={({ item }) => (
+              <Item {...item} navigation={navigation} />
+            )}
             style={{ height: "100%" }}
           />
+          {/* <View style={{ marginTop: 8, width: "100%" }}></View> */}
         </BottomSheetView>
       </BottomSheet>
     </View>

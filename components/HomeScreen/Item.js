@@ -1,12 +1,17 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+} from "react-native";
 import { Title, List } from "react-native-paper";
-// import BottomSheet from "@gorhom/bottom-sheet";
 
-const Item = ({ name, address, status }) => {
+const Item = ({ id, name, address, status, navigation }) => {
   // renders
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={() => navigation.navigate("Item", { id: id })}>
       <List.Item
         title={name}
         description={address}
@@ -19,7 +24,7 @@ const Item = ({ name, address, status }) => {
             }}
           >
             <List.Icon
-              icon="key"
+              icon="devices"
               style={{ backgroundColor: "#FFE8E8", borderRadius: 30 }}
               color="#1674B3"
             />
@@ -53,6 +58,14 @@ const Item = ({ name, address, status }) => {
           </View>
         )}
       />
+      <View
+        style={{
+          marginLeft: 65,
+          height: 1,
+          backgroundColor: "#E7E7E5",
+          opacity: 0.5,
+        }}
+      ></View>
     </TouchableOpacity>
   );
 };
@@ -60,17 +73,12 @@ const Item = ({ name, address, status }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // padding: 24,
     backgroundColor: "grey",
-    // height: "100%",
   },
   contentContainer: {
-    // flex: 1,
-    // alignItems: "center",
     position: "absolute",
     backgroundColor: "white",
     width: "100%",
-    // height: 100,
   },
   green: {
     color: "#67DA95",

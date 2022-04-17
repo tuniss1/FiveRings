@@ -12,18 +12,16 @@ const AlbumsRoute = () => <Text>Schedule</Text>;
 
 const RecentsRoute = () => <Text>Notification</Text>;
 
-const MainScreen = () => {
+const MainScreen = ({ navigation }) => {
   const route = [
-    { key: "home", title: "Home", icon: "home-outline" },
-    { key: "schedule", title: "Schedule", icon: "calendar-blank" },
-    { key: "notification", title: "Notification", icon: "bell-outline" },
-    { key: "account", title: "Account", icon: "account-outline" },
+    { key: "home", title: "Home", icon: "home-circle" },
+    { key: "item", title: "Item", icon: "plus-circle" },
+    { key: "account", title: "Me", icon: "account-circle" },
   ];
 
   const screenDict = {
     home: HomeScreen,
-    schedule: AlbumsRoute,
-    notification: RecentsRoute,
+    item: RecentsRoute,
     account: MusicRoute,
   };
 
@@ -39,7 +37,7 @@ const MainScreen = () => {
               <MaterialCommunityIcons
                 name={item.icon}
                 color={color}
-                size={26}
+                size={32}
               />
             ),
           }}
