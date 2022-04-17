@@ -1,7 +1,7 @@
 import Home from "components/HomeScreen";
 
-const HomeScreen = ({ navigate }) => {
-  return <Home />;
+const HomeScreen = ({ navigation }) => {
+  return <Home navigation={navigation} />;
 };
 
 export default HomeScreen;

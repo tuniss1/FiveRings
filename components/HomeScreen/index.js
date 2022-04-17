@@ -9,17 +9,21 @@ import {
 } from "react-native";
 import { Title } from "react-native-paper";
 import Item from "./Item";
-import BottomSheet, {
-  BottomSheetFlatList,
-  BottomSheetView,
-} from "@gorhom/bottom-sheet";
+import MapView from "react-native-maps";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 
-const MIN_HEIGHT = 50;
+const MIN_HEIGHT = 70;
 const MAX_HEIGHT = Dimensions.get("window").height * 0.55;
 
-const Home = () => {
+const Home = ({ navigation }) => {
   // const [snapPoint, setSnapPoint] = useState(MIN_HEIGHT);
   // const [touchStart, setTouchStart] = useState(10);
+  const [coordinates, setCoordinates] = useState({
+    latitude: 10.3596469,
+    longitude: 107.0968701,
+    latitudeDelta: 0.01,
+    longitudeDelta: 0.01 * (Dimensions.get("window").width / 225),
+  });
 
   // ref
   const bottomSheetRef = useRef(null);
@@ -29,7 +33,7 @@ const Home = () => {
 
   // callbacks
   const handleSheetChanges = useCallback((index) => {
-    console.log("handleSheetChanges", index);
+    // console.log("handleSheetChanges", index);
   }, []);
 
   const CLONE = [
@@ -53,56 +57,15 @@ const Home = () => {
     },
   ];
 
-  const renderItem = useCallback(({ item }) => <Item {...item} />, []);
+  // const renderItem = useCallback(({ item }) => <Item {...item} />, []);
 
   // renders
   return (
     <View style={styles.container}>
-      {/* <View
-        style={{
-          ...styles.contentContainer,
-          top: snapPoint,
-          borderTopLeftRadius: 16,
-          borderTopRightRadius: 16,
-          height: (MAX_HEIGHT / 0.45) * 0.55,
-        }}
-      >
-        <View
-          onTouchStart={(e) =>
-            setTouchStart(Math.abs(snapPoint - e.nativeEvent.pageY))
-          }
-          onTouchMove={(e) => {
-            const scrollY = e.nativeEvent.pageY - touchStart;
-            if (scrollY > MIN_HEIGHT) setSnapPoint(MIN_HEIGHT);
-            else if (scrollY < MAX_HEIGHT) setSnapPoint(MAX_HEIGHT);
-            else setSnapPoint(scrollY);
-          }}
-        >
-          <View
-            style={{
-              padding: 10,
-              alignItems: "center",
-            }}
-          >
-            <View
-              style={{
-                backgroundColor: "#ACACAC",
-                height: 3,
-                width: 70,
-                borderRadius: 3,
-              }}
-            ></View>
-          </View>
-        </View>
-        <View style={{ alignItems: "center", padding: 4 }}>
-          <Title>List Items</Title>
-        </View>
-        <FlatList
-          data={CLONE}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <Item {...item} />}
-        />
-      </View> */}
+      <MapView
+        initialRegion={coordinates}
+        style={styles.mapContainer}
+      ></MapView>
       <BottomSheet
         ref={bottomSheetRef}
         index={0}
@@ -113,17 +76,18 @@ const Home = () => {
           <View style={{ alignItems: "center", padding: 4 }}>
             <Title>List Items</Title>
           </View>
-          <BottomSheetFlatList
+          {/* <BottomSheetFlatList
             // ref={}
             data={CLONE}
             keyExtractor={(i) => i.id}
             renderItem={renderItem}
-          />
-          {/* <FlatList
+          /> */}
+          <FlatList
             data={CLONE}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => <Item {...item} />}
-          /> */}
+            style={{ height: "100%" }}
+          />
         </BottomSheetView>
       </BottomSheet>
     </View>
@@ -147,13 +111,65 @@ const styles = StyleSheet.create({
   // },
   container: {
     flex: 1,
-    padding: 24,
-    backgroundColor: "grey",
   },
   contentContainer: {
     flex: 1,
     alignItems: "center",
   },
+  mapContainer: {
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
+  },
 });
 
 export default Home;
+
+{
+  /* <View style={styles.container}>
+  <View
+    style={{
+      ...styles.contentContainer,
+      top: snapPoint,
+      borderTopLeftRadius: 16,
+      borderTopRightRadius: 16,
+      height: (MAX_HEIGHT / 0.45) * 0.55,
+    }}
+  >
+    <View
+      onTouchStart={(e) =>
+        setTouchStart(Math.abs(snapPoint - e.nativeEvent.pageY))
+      }
+      onTouchMove={(e) => {
+        const scrollY = e.nativeEvent.pageY - touchStart;
+        if (scrollY > MIN_HEIGHT) setSnapPoint(MIN_HEIGHT);
+        else if (scrollY < MAX_HEIGHT) setSnapPoint(MAX_HEIGHT);
+        else setSnapPoint(scrollY);
+      }}
+    >
+      <View
+        style={{
+          padding: 10,
+          alignItems: "center",
+        }}
+      >
+        <View
+          style={{
+            backgroundColor: "#ACACAC",
+            height: 3,
+            width: 70,
+            borderRadius: 3,
+          }}
+        ></View>
+      </View>
+    </View>
+    <View style={{ alignItems: "center", padding: 4 }}>
+      <Title>List Items</Title>
+    </View>
+    <FlatList
+      data={CLONE}
+      keyExtractor={(item) => item.id}
+      renderItem={({ item }) => <Item {...item} />}
+    />
+  </View>
+</View>; */
+}

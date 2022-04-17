@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Title, List } from "react-native-paper";
 // import BottomSheet from "@gorhom/bottom-sheet";
 
 const Item = ({ name, address, status }) => {
   // renders
   return (
-    <View>
+    <TouchableOpacity>
       <List.Item
         title={name}
         description={address}
@@ -53,7 +53,7 @@ const Item = ({ name, address, status }) => {
           </View>
         )}
       />
-    </View>
+    </TouchableOpacity>
   );
 };
 
