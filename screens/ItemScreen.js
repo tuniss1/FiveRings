@@ -4,13 +4,13 @@ import { IconButton } from "react-native-paper";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import MapView, { Marker } from "react-native-maps";
 
-import ItemCard from "components/ItemCard";
-import PositionCard from "components/PositionCard";
-import TrackingItemCard from "components/TrackingItemCard";
-import StopTrackingItemCard from "components/StopTrackingItemCard";
-import FindingItemCard from "components/FindingItemCard";
-import StopFindingItemCard from "components/StopFindingItemCard";
-import DeleteItemCard from "components/DeleteItemCard";
+import ItemCard from "components/ItemScreen/ItemCard";
+import PositionCard from "components/ItemScreen/PositionCard";
+import TrackingItemCard from "components/ItemScreen/TrackingItemCard";
+import StopTrackingItemCard from "components/ItemScreen/StopTrackingItemCard";
+import FindingItemCard from "components/ItemScreen/FindingItemCard";
+import StopFindingItemCard from "components/ItemScreen/StopFindingItemCard";
+import DeleteItemCard from "components/ItemScreen/DeleteItemCard";
 
 const region = {
   latitude: 10.3596469,

@@ -1,6 +1,6 @@
-import { View, Text, StyleSheet, Dimensions } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 import MapView from "react-native-maps";
-import React, { useState, useCallback, useMemo, useRef } from "react";
+import React, { useState } from "react";
 
 const MapScreen = () => {
   const [coordinates, setCoordinates] = useState({
@@ -15,27 +15,6 @@ const MapScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  // container: {
-  //   flex: 1,
-  //   // padding: 24,
-  //   backgroundColor: "grey",
-  //   // height: "100%",
-  // },
-  // contentContainer: {
-  //   // flex: 1,
-  //   // alignItems: "center",
-  //   position: "absolute",
-  //   backgroundColor: "white",
-  //   width: "100%",
-  //   // height: 100,
-  // },
-  container: {
-    flex: 1,
-  },
-  contentContainer: {
-    flex: 1,
-    alignItems: "center",
-  },
   mapContainer: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height - 200,

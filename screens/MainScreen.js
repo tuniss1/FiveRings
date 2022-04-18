@@ -1,5 +1,5 @@
 import * as React from "react";
-import { BottomNavigation, Text } from "react-native-paper";
+import { Text } from "react-native-paper";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import HomeScreen from "./HomeScreen";
@@ -15,7 +15,7 @@ const RecentsRoute = () => <Text>Notification</Text>;
 const MainScreen = ({ navigation }) => {
   const route = [
     { key: "home", title: "Home", icon: "home-circle" },
-    { key: "item", title: "Item", icon: "plus-circle" },
+    { key: "item", title: "AddItem", icon: "plus-circle" },
     { key: "account", title: "Me", icon: "account-circle" },
   ];
 
@@ -27,8 +27,9 @@ const MainScreen = ({ navigation }) => {
 
   return (
     <Tab.Navigator screenOptions={{ headerShown: false }}>
-      {route.map((item) => (
+      {route.map((item, idx) => (
         <Tab.Screen
+          key={idx}
           name={item.title}
           component={screenDict[item.key]}
           options={{
