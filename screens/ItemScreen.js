@@ -28,9 +28,6 @@ const ItemScreen = ({ navigation }) => {
   // Setup BottomSheet:
   const bottomSheetRef = useRef(null);
   const snapPoints = useMemo(() => ["25%", "50%", "75%"], []);
-  const handleSheetChanges = useCallback((index) => {
-    console.log("handleSheetChanges", index);
-  }, []);
 
   const [isTracking, setIsTracking] = useState(false);
   const [isFinding, setIsFinding] = useState(false);
@@ -41,12 +38,7 @@ const ItemScreen = ({ navigation }) => {
       <MapView region={region} style={styles.mapContainer}>
         <Marker coordinate={coordinate} />
       </MapView>
-      <BottomSheet
-        ref={bottomSheetRef}
-        index={1}
-        snapPoints={snapPoints}
-        onChange={handleSheetChanges}
-      >
+      <BottomSheet ref={bottomSheetRef} index={1} snapPoints={snapPoints}>
         <BottomSheetView style={styles.bottomView}>
           <View style={styles.backIcon}>
             <IconButton

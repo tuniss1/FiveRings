@@ -3,25 +3,22 @@ import { Text } from "react-native-paper";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import HomeScreen from "./HomeScreen";
+import AddItemScreen from "./AddItemScreen";
 
 const Tab = createBottomTabNavigator();
 
 const MusicRoute = () => <Text>Account</Text>;
 
-const AlbumsRoute = () => <Text>Schedule</Text>;
-
-const RecentsRoute = () => <Text>Notification</Text>;
-
 const MainScreen = ({ navigation }) => {
   const route = [
-    { key: "home", title: "Home", icon: "home-circle" },
-    { key: "item", title: "AddItem", icon: "plus-circle" },
-    { key: "account", title: "Me", icon: "account-circle" },
+    { key: "home", name: "Home", title: "Home", icon: "home-circle" },
+    { key: "item", name: "AddItem", title: "Item", icon: "plus-circle" },
+    { key: "account", name: "Me", title: "Me", icon: "account-circle" },
   ];
 
   const screenDict = {
     home: HomeScreen,
-    item: RecentsRoute,
+    item: AddItemScreen,
     account: MusicRoute,
   };
 
@@ -30,7 +27,7 @@ const MainScreen = ({ navigation }) => {
       {route.map((item, idx) => (
         <Tab.Screen
           key={idx}
-          name={item.title}
+          name={item.name}
           component={screenDict[item.key]}
           options={{
             tabBarLabel: item.title,
