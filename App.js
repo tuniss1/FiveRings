@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import MainScreen from "screens/MainScreen";
 import ItemScreen from "screens/ItemScreen";
-import "firebases/firebaseApp";
+import "./firebases/firebaseApp";
 
 const Stack = createNativeStackNavigator();
 
