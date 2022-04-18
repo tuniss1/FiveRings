@@ -10,7 +10,6 @@ module.exports = function (api) {
             components: "./components",
             screens: "./screens",
             assets: "./assets",
-            styles: "./styles",
             firebases: "./firebases",
           },
         },
