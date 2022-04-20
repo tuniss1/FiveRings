@@ -11,6 +11,9 @@ import { Title } from "react-native-paper";
 import Item from "./Item";
 import MapView from "react-native-maps";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import MapViewDirections from "react-native-maps-directions";
+
+const GOOGLE_MAPS_APIKEY = "AIzaSyDxQGxBXYE07Itbe_rBgTETp8c8T9uNNeQ";
 
 const MIN_HEIGHT = 70;
 const MAX_HEIGHT = Dimensions.get("window").height * 0.55;
@@ -24,6 +27,8 @@ const Home = ({ navigation }) => {
     latitudeDelta: 0.01,
     longitudeDelta: 0.01 * (Dimensions.get("window").width / 225),
   });
+
+  const itemCoords = { latitude: 37.771707, longitude: -122.4053769 };
 
   // ref
   const bottomSheetRef = useRef(null);
@@ -62,10 +67,19 @@ const Home = ({ navigation }) => {
   // renders
   return (
     <View style={styles.container}>
-      <MapView
-        initialRegion={coordinates}
-        style={styles.mapContainer}
-      ></MapView>
+      <MapView initialRegion={coordinates} style={styles.mapContainer}>
+        <MapViewDirections
+          origin={{
+            latitude: coordinates.latitude,
+            longitude: coordinates.longitude,
+          }}
+          destination={itemCoords}
+          apikey={GOOGLE_MAPS_APIKEY}
+          strokeWidth={3}
+          strokeColor="hotpink"
+          onError={(errorMessage) => console.log(errorMessage)}
+        />
+      </MapView>
       <BottomSheet
         ref={bottomSheetRef}
         index={0}
