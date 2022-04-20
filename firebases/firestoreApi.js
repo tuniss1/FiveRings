@@ -54,7 +54,9 @@ export const getCurrentUser = async () => {
     const auth = getAuth();
     const uid = auth.currentUser.uid;
     const currentUser = await getDoc(doc(firestore, "users", uid));
+    // console.log(currentUser.data());
     return currentUser.data();
+    
   } catch (error) {
     console.log(error);
   }

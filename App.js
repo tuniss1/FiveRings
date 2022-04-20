@@ -7,7 +7,7 @@ import ItemScreen from "screens/ItemScreen";
 import SignUpScreen from "screens/SignUpScreen";
 import SignInScreen from "screens/SignInScreen";
 import ResetPasswordScreen from "screens/ResetPasswordScreen";
-import ItemsList from "screens/ItemsList";
+import UserScreen from "screens/UserScreen";
 
 // Firebase:
 import "./firebases/firebaseApp";
@@ -43,7 +43,7 @@ const App = () => {
             <>
               <Stack.Screen name="Main" component={MainScreen} />
               <Stack.Screen name="Item" component={ItemScreen} />
-              <Stack.Screen name="Item" component={ItemsList} />
+              <Stack.Screen name="User" component={UserScreen} />
             </>
           ) : (
             <>
