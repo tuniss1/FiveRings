@@ -4,10 +4,11 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import HomeScreen from "./HomeScreen";
 import AddItemScreen from "./AddItemScreen";
+import UserScreen from "./UserScreen";
 
 const Tab = createBottomTabNavigator();
 
-const MusicRoute = () => <Text>Account</Text>;
+ const MusicRoute = () => <Text>Account Her1e</Text>;
 
 const MainScreen = ({ navigation }) => {
   const route = [
@@ -19,7 +20,7 @@ const MainScreen = ({ navigation }) => {
   const screenDict = {
     home: HomeScreen,
     item: AddItemScreen,
-    account: MusicRoute,
+    account: UserScreen,
   };
 
   return (

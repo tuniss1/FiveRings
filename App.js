@@ -8,7 +8,11 @@ import ItemScreen from "screens/ItemScreen";
 import SignUpScreen from "screens/SignUpScreen";
 import SignInScreen from "screens/SignInScreen";
 import ResetPasswordScreen from "screens/ResetPasswordScreen";
+<<<<<<< HEAD
 import store from "./reduxTKit/store";
+=======
+import UserScreen from "screens/UserScreen";
+>>>>>>> test-v2
 
 // Firebase:
 import "./firebases/firebaseApp";
@@ -32,34 +36,33 @@ const App = () => {
   if (pending) return null;
 
   return (
-    <StoreProvider store={store}>
-      <PaperProvider>
-        <NavigationContainer>
-          <Stack.Navigator
-            initialRouteName="Main"
-            screenOptions={{
-              headerShown: false,
-            }}
-          >
-            {currentUser ? (
-              <>
-                <Stack.Screen name="Main" component={MainScreen} />
-                <Stack.Screen name="Item" component={ItemScreen} />
-              </>
-            ) : (
-              <>
-                <Stack.Screen name="SignIn" component={SignInScreen} />
-                <Stack.Screen name="SignUp" component={SignUpScreen} />
-                <Stack.Screen
-                  name="ResetPassword"
-                  component={ResetPasswordScreen}
-                />
-              </>
-            )}
-          </Stack.Navigator>
-        </NavigationContainer>
-      </PaperProvider>
-    </StoreProvider>
+    <PaperProvider>
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="Main"
+          screenOptions={{
+            headerShown: false,
+          }}
+        >
+          {currentUser ? (
+            <>
+              <Stack.Screen name="Main" component={MainScreen} />
+              <Stack.Screen name="Item" component={ItemScreen} />
+              <Stack.Screen name="User" component={UserScreen} />
+            </>
+          ) : (
+            <>
+              <Stack.Screen name="SignIn" component={SignInScreen} />
+              <Stack.Screen name="SignUp" component={SignUpScreen} />
+              <Stack.Screen
+                name="ResetPassword"
+                component={ResetPasswordScreen}
+              />
+            </>
+          )}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
   );
 };
 
