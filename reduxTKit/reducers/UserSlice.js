@@ -40,6 +40,7 @@ export default UserSlice = createSlice({
     email: String(),
     userId: String(),
     username: String(),
+    coords: null,
   },
   reducers: {
     updateUserInfo: (state, action) => {
@@ -47,6 +48,9 @@ export default UserSlice = createSlice({
       state.userId = action.payload.userId;
       state.username = action.payload.username;
     }, // => { type: 'user/updateUserInfo' }
+    updateUserLocation: (state, action) => {
+      state.coords = action.payload.coords;
+    },
   },
 });
 

@@ -14,6 +14,16 @@ export const itemListSelector = (state) => {
   return state.itemList;
 };
 
+export const getCurItem = (state, index) => {
+  // console.log(state.itemList[index]);
+  console.log(state);
+  console.log(index);
+};
+
+export const userSelector = (state) => {
+  return state.user;
+};
+
 /*
   If we have a selector dependent on other selector, then
   export const todosRemainingSelector = createSelector(todoListSelector, searchTextSelector, (todoList, searchText) => {

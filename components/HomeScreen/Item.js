@@ -1,43 +1,30 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Dimensions,
-} from "react-native";
-import { Title, List } from "react-native-paper";
+import React from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { List } from "react-native-paper";
 
-const Item = ({
-  id,
-  name,
-  address,
-  status,
-  navigation,
-  lat,
-  lng,
-  userCoords,
-}) => {
+const Item = ({ item, navigation, userCoords, index }) => {
   // renders
   return (
     <TouchableOpacity
       onPress={() =>
         navigation.navigate("Item", {
-          id: id,
-          name: name,
-          status: status,
-          address: address,
+          index: index,
+          id: item.id,
+          name: item.name,
+          address: item.address,
           itemCoords: {
-            latitude: lat,
-            longitude: lng,
+            latitude: item.lat,
+            longitude: item.lng,
           },
+          mode: item.mode,
+          latestAddress: item.latestAddress,
           userCoords: userCoords,
         })
       }
     >
       <List.Item
-        title={name}
-        description={address}
+        title={item.name}
+        description={item.latestAddress}
         left={() => (
           <View
             style={{
@@ -70,7 +57,7 @@ const Item = ({
                 borderRadius: 4,
               }}
             >
-              {status == 0 ? (
+              {item.mode == 0 ? (
                 <Text style={styles.red}>Not nail</Text>
               ) : (
                 <Text style={styles.green}>Nail items</Text>

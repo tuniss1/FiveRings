@@ -26,8 +26,8 @@ const ItemScreen = ({ navigation, route: { params } }) => {
   const bottomSheetRef = useRef(null);
   const snapPoints = useMemo(() => ["25%", "50%", "75%"], []);
 
-  const [isTracking, setIsTracking] = useState(params.status !== 0);
-  const [isFinding, setIsFinding] = useState(params.status === 2);
+  const [isTracking, setIsTracking] = useState(params.mode !== 0);
+  const [isFinding, setIsFinding] = useState(params.mode === 2);
 
   // region start at user position
   const region = {
@@ -111,8 +111,8 @@ const ItemScreen = ({ navigation, route: { params } }) => {
               onPress={() => navigation.goBack()}
             />
           </View>
-          <ItemCard itemName={params.name} nailStatus={params.status} />
-          <PositionCard position={params.address} distance={distance} />
+          <ItemCard itemName={params.name} nailStatus={params.mode} />
+          <PositionCard position={params.latestAddress} distance={distance} />
           {isTracking ? (
             <StopTrackingItemCard setIsTracking={setIsTracking} />
           ) : (

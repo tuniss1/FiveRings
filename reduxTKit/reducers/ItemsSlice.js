@@ -1,61 +1,23 @@
-// const initState = [
-//   {
-//     id: String(),
-//     imgUrl: String(),
-//     lng: Number(),
-//     lat: Number(),
-//     latestLocation: String(),
-//     mode: Number(),
-//     name: String(),
-//   },
-// ];
-
-// const itemListReducer = (state = initState, action) => {
-//   /*
-//     Note that: action, which has type and payload
-//     Example:
-//     action = {
-//       type: 'itemList/addItem',
-//       payload: {
-//         id: "EdeZmbpqGiNka0truTaD",
-//         imgUrl: "",
-//         lng: 106.927398,
-//         lat: 12.076924,
-//         latestLocation: "",
-//         mode: 0,
-//         name: "AirTag",
-//       }
-//     }
-//   */
-//   switch (action.type) {
-//     case "itemList/addItem":
-//       return [...state, action.payload];
-//     default:
-//       return state;
-//   }
-// };
-
-// export default itemListReducer;
-
 import { createSlice } from "@reduxjs/toolkit";
 
 export default ItemsSlice = createSlice({
   name: "itemList",
   initialState: [
-    {
-      id: String(),
-      imgUrl: String(),
-      lng: Number(),
-      lat: Number(),
-      latestLocation: String(),
-      mode: Number(),
-      name: String(),
-    },
+    // {
+    //   id: String(),
+    //   imgUrl: String(),
+    //   lng: Number(),
+    //   lat: Number(),
+    //   latestLocation: String(),
+    //   mode: Number(),
+    //   name: String(),
+    // },
   ],
   reducers: {
     addItem: (state, action) => {
       state.push(action.payload);
     }, // => { type: 'itemList/addItem' }
+    fetchItem: (state, action) => action.payload,
   },
 });
 
