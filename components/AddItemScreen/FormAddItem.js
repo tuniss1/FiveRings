@@ -76,7 +76,11 @@ const FormAddItem = () => {
             >
               {errors.itemId}
             </HelperText>
-            <Button mode="contained" onPress={handleSubmit}>
+            <Button
+              mode="contained"
+              onPress={handleSubmit}
+              style={{ paddingVertical: 5, marginTop: 10 }}
+            >
               Add item
             </Button>
           </View>

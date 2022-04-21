@@ -27,7 +27,7 @@ const coordinate = {
 const ItemScreen = ({ navigation }) => {
   // Setup BottomSheet:
   const bottomSheetRef = useRef(null);
-  const snapPoints = useMemo(() => ["25%", "50%", "75%"], []);
+  const snapPoints = useMemo(() => ["20%", "60%", "75%"], []);
 
   const [isTracking, setIsTracking] = useState(false);
   const [isFinding, setIsFinding] = useState(false);
@@ -42,7 +42,7 @@ const ItemScreen = ({ navigation }) => {
         <BottomSheetView style={styles.bottomView}>
           <View style={styles.backIcon}>
             <IconButton
-              size={26}
+              size={30}
               icon="arrow-left-circle"
               style={styles.backIcon}
               color="#ffbd24"

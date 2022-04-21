@@ -1,4 +1,10 @@
-import React, { useCallback, useMemo,useEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useMemo,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   View,
   Text,
@@ -12,8 +18,7 @@ import { Title } from "react-native-paper";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import MapView, { Marker } from "react-native-maps";
 import FormAddItem from "components/AddItemScreen/FormAddItem";
-import { getUserInfo,getCurrentUser } from "firebases/firestoreApi";
-
+import { getUserInfo, getCurrentUser } from "firebases/firestoreApi";
 
 const region = {
   latitude: 10.3596469,
@@ -29,21 +34,20 @@ const coordinate = {
 const UserScreen = ({ navigation }) => {
   // Setup BottomSheet:
   const bottomSheetRef = useRef(null);
-  const snapPoints = useMemo(() => ["10%", "80%"], []);
+  const snapPoints = useMemo(() => ["4%", "75%"], []);
   const [text, onChangeText] = useState("Useless Text");
-  const [currUser,onSetCurrUser] = useState("");
+  const [currUser, onSetCurrUser] = useState("");
   // renders
   //console.log(":hello");
-  useEffect(()=>{
-    
+  useEffect(() => {
     const data = async () => {
-      await getCurrentUser().then((data)=>{
-        onSetCurrUser(data)
-      })
-    }
+      await getCurrentUser().then((data) => {
+        onSetCurrUser(data);
+      });
+    };
 
-    data()
-  },[])
+    data();
+  }, []);
   //console.log(currUser.userId)
   return (
     <>
@@ -54,43 +58,43 @@ const UserScreen = ({ navigation }) => {
       <BottomSheet ref={bottomSheetRef} index={1} snapPoints={snapPoints}>
         <BottomSheetView style={styles.bottomView}>
           <View style={{ alignItems: "center", padding: 4 }}>
-            <Title style={{color: "blue"}}>Personal Information</Title>
+            <Title style={{ color: "blue" }}>Personal Information</Title>
+          </View>
+          <View style={{ paddingHorizontal: 15 }}>
+            <View style={{ marginBottom: 8 }}>
+              <Text>User name</Text>
+              <TextInput
+                style={styles.input}
+                mode="outlined"
+                onChangeText={onChangeText}
+                value={currUser.username}
+                outlineColor="#289cb4"
+              />
+            </View>
+
+            <View style={{ marginBottom: 8 }}>
+              <Text>Email</Text>
+              <TextInput
+                style={styles.input}
+                mode="outlined"
+                onChangeText={onChangeText}
+                value={currUser.email}
+                outlineColor="#289cb4"
+              />
+            </View>
+
+            <View style={{ marginBottom: 8 }}>
+              <Text>User Id</Text>
+              <TextInput
+                style={styles.input}
+                mode="outlined"
+                onChangeText={onChangeText}
+                value={currUser.userId}
+                outlineColor="#289cb4"
+              />
+            </View>
           </View>
         </BottomSheetView>
-        <View style={{ flex: 1, paddingHorizontal: 15 }}>
-          <View style={{  marginBottom: 8 }}>
-          <Text>User name</Text>
-          <TextInput
-            style={styles.input}
-            mode="outlined"
-            onChangeText={onChangeText}
-            value={currUser.username}
-             outlineColor="#289cb4"
-          />
-          </View>
-
-          <View style={{  marginBottom: 8 }}>
-            <Text>Email</Text>
-            <TextInput
-              style={styles.input}
-              mode="outlined"
-              onChangeText={onChangeText}
-              value={currUser.email}
-               outlineColor="#289cb4"
-            />
-          </View>
-
-          <View style={{  marginBottom: 8 }}> 
-            <Text>User Id</Text>
-            <TextInput
-              style={styles.input}
-              mode="outlined"
-              onChangeText={onChangeText}
-              value={currUser.userId}
-               outlineColor="#289cb4"
-            />
-          </View>
-        </View>
       </BottomSheet>
     </>
   );
