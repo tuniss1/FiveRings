@@ -8,10 +8,33 @@ import {
 } from "react-native";
 import { Title, List } from "react-native-paper";
 
-const Item = ({ id, name, address, status, navigation }) => {
+const Item = ({
+  id,
+  name,
+  address,
+  status,
+  navigation,
+  lat,
+  lng,
+  userCoords,
+}) => {
   // renders
   return (
-    <TouchableOpacity onPress={() => navigation.navigate("Item", { id: id })}>
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate("Item", {
+          id: id,
+          name: name,
+          status: status,
+          address: address,
+          itemCoords: {
+            latitude: lat,
+            longitude: lng,
+          },
+          userCoords: userCoords,
+        })
+      }
+    >
       <List.Item
         title={name}
         description={address}
@@ -49,8 +72,6 @@ const Item = ({ id, name, address, status, navigation }) => {
             >
               {status == 0 ? (
                 <Text style={styles.red}>Not nail</Text>
-              ) : status == 1 ? (
-                <Text style={styles.green}>With you</Text>
               ) : (
                 <Text style={styles.green}>Nail items</Text>
               )}

@@ -12,6 +12,9 @@ import ResetPasswordScreen from "screens/ResetPasswordScreen";
 import "./firebases/firebaseApp";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
+import { LogBox } from "react-native";
+LogBox.ignoreAllLogs(); // Ignore all log notifications
+
 const Stack = createNativeStackNavigator();
 
 const App = () => {

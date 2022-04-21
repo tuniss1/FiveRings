@@ -9,26 +9,18 @@ import {
 } from "react-native";
 import { Title } from "react-native-paper";
 import Item from "./Item";
-import MapView from "react-native-maps";
+import MapView, { Marker } from "react-native-maps";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
-import MapViewDirections from "react-native-maps-directions";
-
-const GOOGLE_MAPS_APIKEY = "AIzaSyDxQGxBXYE07Itbe_rBgTETp8c8T9uNNeQ";
 
 const MIN_HEIGHT = 70;
 const MAX_HEIGHT = Dimensions.get("window").height * 0.55;
 
-const Home = ({ navigation }) => {
-  // const [snapPoint, setSnapPoint] = useState(MIN_HEIGHT);
-  // const [touchStart, setTouchStart] = useState(10);
-  const [coordinates, setCoordinates] = useState({
-    latitude: 10.3596469,
-    longitude: 107.0968701,
+const Home = ({ navigation, coords }) => {
+  const coordinates = {
+    ...coords,
     latitudeDelta: 0.01,
     longitudeDelta: 0.01 * (Dimensions.get("window").width / 225),
-  });
-
-  const itemCoords = { latitude: 37.771707, longitude: -122.4053769 };
+  };
 
   // ref
   const bottomSheetRef = useRef(null);
@@ -46,39 +38,33 @@ const Home = ({ navigation }) => {
       id: 1,
       name: "Item 1",
       address: "229 Andrew Dr Manning, South Carolina(SC), 29102",
+      lng: 106.789,
+      lat: 10.459,
       status: 0,
     },
     {
       id: 2,
       name: "Item 2",
       address: "229 Andrew Dr Manning, South Carolina(SC), 29102",
+      lng: 106.789,
+      lat: 10.459,
       status: 1,
     },
     {
       id: 3,
       name: "Item 3",
       address: "229 Andrew Dr Manning, South Carolina(SC), 29102",
+      lng: 106.789,
+      lat: 10.459,
       status: 2,
     },
   ];
-
-  // const renderItem = useCallback(({ item }) => <Item {...item} />, []);
 
   // renders
   return (
     <View style={styles.container}>
       <MapView initialRegion={coordinates} style={styles.mapContainer}>
-        <MapViewDirections
-          origin={{
-            latitude: coordinates.latitude,
-            longitude: coordinates.longitude,
-          }}
-          destination={itemCoords}
-          apikey={GOOGLE_MAPS_APIKEY}
-          strokeWidth={3}
-          strokeColor="hotpink"
-          onError={(errorMessage) => console.log(errorMessage)}
-        />
+        <Marker coordinate={coordinates}></Marker>
       </MapView>
       <BottomSheet
         ref={bottomSheetRef}
@@ -97,21 +83,14 @@ const Home = ({ navigation }) => {
               opacity: 0.5,
             }}
           ></View>
-          {/* <BottomSheetFlatList
-            // ref={}
-            data={CLONE}
-            keyExtractor={(i) => i.id}
-            renderItem={renderItem}
-          /> */}
           <FlatList
             data={CLONE}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
-              <Item {...item} navigation={navigation} />
+              <Item {...item} navigation={navigation} userCoords={coords} />
             )}
             style={{ height: "100%" }}
           />
-          {/* <View style={{ marginTop: 8, width: "100%" }}></View> */}
         </BottomSheetView>
       </BottomSheet>
     </View>

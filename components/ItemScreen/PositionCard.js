@@ -1,9 +1,11 @@
 import { View, Text, StyleSheet } from "react-native";
 
-const PositionCard = ({ position }) => {
+const PositionCard = ({ position, distance }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Latest position: </Text>
+      <Text style={styles.title}>
+        Latest position{distance ? ` (${distance})` : ""}:{" "}
+      </Text>
       <Text style={styles.desc}>{position}</Text>
     </View>
   );

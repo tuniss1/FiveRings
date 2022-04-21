@@ -1,4 +1,10 @@
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useMemo,
+  useRef,
+  useState,
+  useEffect,
+} from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
 import { IconButton } from "react-native-paper";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
@@ -11,32 +17,88 @@ import StopTrackingItemCard from "components/ItemScreen/StopTrackingItemCard";
 import FindingItemCard from "components/ItemScreen/FindingItemCard";
 import StopFindingItemCard from "components/ItemScreen/StopFindingItemCard";
 import DeleteItemCard from "components/ItemScreen/DeleteItemCard";
+import MapViewDirections from "react-native-maps-directions";
 
-const region = {
-  latitude: 10.3596469,
-  longitude: 107.0968701,
-  latitudeDelta: 0.0922,
-  longitudeDelta: 0.0421,
-};
+const GOOGLE_MAPS_APIKEY = "AIzaSyAPpibb8QB3CR0B2m5ZBkBrRS75YluhNi8";
 
-const coordinate = {
-  latitude: 10.3596469,
-  longitude: 107.0968701,
-};
-
-const ItemScreen = ({ navigation }) => {
+const ItemScreen = ({ navigation, route: { params } }) => {
   // Setup BottomSheet:
   const bottomSheetRef = useRef(null);
   const snapPoints = useMemo(() => ["25%", "50%", "75%"], []);
 
-  const [isTracking, setIsTracking] = useState(false);
-  const [isFinding, setIsFinding] = useState(false);
+  const [isTracking, setIsTracking] = useState(params.status !== 0);
+  const [isFinding, setIsFinding] = useState(params.status === 2);
+
+  // region start at user position
+  const region = {
+    ...params.userCoords,
+    latitudeDelta: 0.01,
+    longitudeDelta: 0.01 * (Dimensions.get("window").width / 225),
+  };
+
+  const origin = {
+    latitude: params.userCoords.latitude,
+    longitude: params.userCoords.longitude,
+  };
+
+  // latitude + longitude cua item tren firebase bi loi
+  const destination = params.itemCoords;
+
+  // console.log(params);
+  // console.log("origin");
+  // console.log(origin);
+  // console.log("dest");
+  // console.log(destination);
+
+  const [distance, setDistance] = useState(null);
+  useEffect(() => {
+    const getDistance = async () => {
+      const mode = "driving";
+      const url =
+        "https://maps.googleapis.com/maps/api/distancematrix/json?" +
+        "destinations=" +
+        destination.latitude +
+        "," +
+        destination.longitude +
+        "&mode=" +
+        mode +
+        "&origins=" +
+        origin.latitude +
+        "," +
+        origin.longitude +
+        "&key=" +
+        GOOGLE_MAPS_APIKEY;
+      const response = await fetch(url)
+        .then((res) => res.json())
+        .then((data) => {
+          return data;
+        });
+      if (response.rows[0].elements[0].status == "OK")
+        setDistance(response.rows[0].elements[0].distance.text);
+    };
+    getDistance();
+  }, []);
 
   // renders
   return (
     <View style={styles.container}>
       <MapView region={region} style={styles.mapContainer}>
-        <Marker coordinate={coordinate} />
+        <Marker coordinate={params.userCoords} />
+        <Marker coordinate={params.itemCoords} />
+        {isFinding && (
+          <MapViewDirections
+            origin={origin}
+            destination={destination}
+            apikey={GOOGLE_MAPS_APIKEY}
+            strokeWidth={6}
+            strokeColor="hotpink"
+            onReady={(result) => console.log(result)}
+            onError={(errorMessage) => {
+              console.log("GOT AN ERROR");
+              console.log(errorMessage);
+            }}
+          />
+        )}
       </MapView>
       <BottomSheet ref={bottomSheetRef} index={1} snapPoints={snapPoints}>
         <BottomSheetView style={styles.bottomView}>
@@ -49,12 +111,8 @@ const ItemScreen = ({ navigation }) => {
               onPress={() => navigation.goBack()}
             />
           </View>
-          <ItemCard itemName={"Item"} nailStatus={isTracking} />
-          <PositionCard
-            position={
-              "268 Ly Thuong Kiet, Quan 10, Thanh pho Ho Chi Minh, Vietnam"
-            }
-          />
+          <ItemCard itemName={params.name} nailStatus={params.status} />
+          <PositionCard position={params.address} distance={distance} />
           {isTracking ? (
             <StopTrackingItemCard setIsTracking={setIsTracking} />
           ) : (
