@@ -13,7 +13,7 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { getAuth } from "firebase/auth";
+import { getAuth, signOut } from "firebase/auth";
 
 const firestore = getFirestore();
 
@@ -56,8 +56,19 @@ export const getCurrentUser = async () => {
     const currentUser = await getDoc(doc(firestore, "users", uid));
     // console.log(currentUser.data());
     return currentUser.data();
-    
   } catch (error) {
     console.log(error);
   }
+};
+
+export const signOutFunction = async () => {
+  const auth = getAuth();
+  signOut(auth)
+    .then(() => {
+      // Sign-out successful.
+    })
+    .catch((error) => {
+      // An error happened.
+      console.log(error);
+    });
 };

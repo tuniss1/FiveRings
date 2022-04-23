@@ -13,12 +13,14 @@ import {
   Dimensions,
   ScrollView,
   TouchableOpacity,
+  
 } from "react-native";
-import { Title } from "react-native-paper";
+import { Title,Button } from "react-native-paper";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import MapView, { Marker } from "react-native-maps";
 import FormAddItem from "components/AddItemScreen/FormAddItem";
-import { getUserInfo, getCurrentUser } from "firebases/firestoreApi";
+import { getUserInfo, getCurrentUser,signOutFunction } from "firebases/firestoreApi";
+import { Formik } from "formik";
 
 const region = {
   latitude: 10.3596469,
@@ -48,9 +50,9 @@ const UserScreen = ({ navigation }) => {
 
     data();
   }, []);
-  //console.log(currUser.userId)
+  console.log(currUser)
   return (
-    <>
+    <View style={styles.container}>
       <MapView region={region} style={styles.mapContainer}>
         <Marker coordinate={coordinate} />
       </MapView>
@@ -93,10 +95,24 @@ const UserScreen = ({ navigation }) => {
                 outlineColor="#289cb4"
               />
             </View>
+
+            <Button
+              mode="contained"
+              onPress={()=>{console.log("hello khoa")}}
+              style={{ 
+                paddingVertical: 5,
+                marginTop:100,
+                paddingHorizontal: 20
+              }}
+            >
+              Sign Out
+            </Button>
           </View>
         </BottomSheetView>
       </BottomSheet>
-    </>
+
+
+    </View>
   );
 };
 
@@ -105,6 +121,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    // borderColor: "#289cb4",
+    // borderWidth: 1,
   },
   contentContainer: {
     flex: 1,
@@ -121,6 +139,14 @@ const styles = StyleSheet.create({
     padding: 10,
     borderColor: "#289cb4",
   },
+  bottomView: {
+    borderColor: "#289cb4",
+    borderWidth: 1,
+    flex: 1,
+    // justifyContent: 'flex-end',
+    marginBottom: 10,
+    marginVertical: 20
+  }
 });
 
 export default UserScreen;
