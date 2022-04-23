@@ -13,13 +13,23 @@ import {
   Dimensions,
   ScrollView,
   TouchableOpacity,
-  
 } from "react-native";
-import { Title,Button } from "react-native-paper";
+import {
+  Title,
+  Button,
+  Paragraph,
+  Dialog,
+  Portal,
+  Provider,
+} from "react-native-paper";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import MapView, { Marker } from "react-native-maps";
 import FormAddItem from "components/AddItemScreen/FormAddItem";
-import { getUserInfo, getCurrentUser,signOutFunction } from "firebases/firestoreApi";
+import {
+  getUserInfo,
+  getCurrentUser,
+  signOutFunction,
+} from "firebases/firestoreApi";
 import { Formik } from "formik";
 
 const region = {
@@ -39,6 +49,10 @@ const UserScreen = ({ navigation }) => {
   const snapPoints = useMemo(() => ["4%", "75%"], []);
   const [text, onChangeText] = useState("Useless Text");
   const [currUser, onSetCurrUser] = useState("");
+  const [visible, setVisible] = useState(false);
+  const showDialog = () => setVisible(true);
+
+  const hideDialog = () => setVisible(false);
   // renders
   //console.log(":hello");
   useEffect(() => {
@@ -50,7 +64,7 @@ const UserScreen = ({ navigation }) => {
 
     data();
   }, []);
-  console.log(currUser)
+  console.log(currUser);
   return (
     <View style={styles.container}>
       <MapView region={region} style={styles.mapContainer}>
@@ -62,6 +76,7 @@ const UserScreen = ({ navigation }) => {
           <View style={{ alignItems: "center", padding: 4 }}>
             <Title style={{ color: "blue" }}>Personal Information</Title>
           </View>
+
           <View style={{ paddingHorizontal: 15 }}>
             <View style={{ marginBottom: 8 }}>
               <Text>User name</Text>
@@ -96,22 +111,45 @@ const UserScreen = ({ navigation }) => {
               />
             </View>
 
-            <Button
-              mode="contained"
-              onPress={()=>{console.log("hello khoa")}}
-              style={{ 
+            {/* <Button
+              mode="contained "
+              onPress={() => {
+                signOutFunction();
+              }}
+              style={{
                 paddingVertical: 5,
-                marginTop:100,
-                paddingHorizontal: 20
+                marginTop: 100,
+                paddingHorizontal: 20,
               }}
             >
               Sign Out
-            </Button>
+            </Button> */}
+
+            <View>
+                <Button onPress={showDialog} mode="contained " style={{
+                paddingVertical: 5,
+                marginTop: 100,
+                paddingHorizontal: 20,
+              }}>Sign Out</Button>
+                <Portal>
+                  <Dialog visible={visible} onDismiss={hideDialog}>
+                    <Dialog.Title>Do you want to log out</Dialog.Title>
+                    <Dialog.Content>
+                      <Paragraph>This is close all connection of your items</Paragraph>
+                    </Dialog.Content>
+                    <Dialog.Actions>
+                      <Button onPress={()=>{signOutFunction()}}>Done</Button>
+                      <Button style={{
+                        color: '#289cb4',
+                      }} onPress={hideDialog}>Cancel</Button>
+                    </Dialog.Actions>
+                    
+                  </Dialog>
+                </Portal>
+              </View>
           </View>
         </BottomSheetView>
       </BottomSheet>
-
-
     </View>
   );
 };
@@ -140,13 +178,13 @@ const styles = StyleSheet.create({
     borderColor: "#289cb4",
   },
   bottomView: {
-    borderColor: "#289cb4",
-    borderWidth: 1,
+    // borderColor: "#289cb4",
+    // borderWidth: 1,
     flex: 1,
     // justifyContent: 'flex-end',
     marginBottom: 10,
-    marginVertical: 20
-  }
+    marginVertical: 20,
+  },
 });
 
 export default UserScreen;

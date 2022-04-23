@@ -43,7 +43,7 @@ const App = () => {
             <>
               <Stack.Screen name="Main" component={MainScreen} />
               <Stack.Screen name="Item" component={ItemScreen} />
-              <Stack.Screen name="User" component={UserScreen} />
+              {/* <Stack.Screen name="User" component={UserScreen} /> */}
             </>
           ) : (
             <>
