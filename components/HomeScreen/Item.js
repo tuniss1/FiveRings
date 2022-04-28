@@ -17,14 +17,14 @@ const Item = ({ item, navigation, userCoords, index }) => {
             longitude: item.lng,
           },
           mode: item.mode,
-          latestAddress: item.latestAddress,
+          latestAddress: item.latestLocation,
           userCoords: userCoords,
         })
       }
     >
       <List.Item
         title={item.name}
-        description={item.latestAddress}
+        description={item.latestLocation}
         left={() => (
           <View
             style={{
