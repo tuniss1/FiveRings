@@ -8,6 +8,9 @@ import { itemListSelector, userSelector } from "reduxTKit/selectors";
 import UserSlice from "reduxTKit/reducers/UserSlice";
 import ItemsSlice from "reduxTKit/reducers/ItemsSlice";
 import { getLatLng } from "firebases/realtimeApi";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+const GOOGLE_MAPS_APIKEY = "AIzaSyAPpibb8QB3CR0B2m5ZBkBrRS75YluhNi8";
 
 const HomeScreen = ({ navigation }) => {
   const user = useSelector(userSelector);
@@ -15,19 +18,53 @@ const HomeScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   // const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getUserLocation = async () => {
+      setLoading(true);
+
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
         return;
       }
-
       let location = await Location.getCurrentPositionAsync({});
-      dispatch(UserSlice.actions.updateUserLocation(location));
+
+      try {
+        const value = await AsyncStorage.getItem("userCoords");
+        console.log("get user");
+        console.log(value);
+        if (value !== null) {
+          // value previously stored
+          const storageValue = JSON.parse(value);
+
+          if (
+            storageValue.coords.latitude != location.coords.latitude ||
+            storageValue.coords.longitude != loading.coords.longitude
+          ) {
+            dispatch(UserSlice.actions.updateUserLocation(storageValue));
+          }
+        } else {
+          try {
+            await AsyncStorage.setItem(
+              "userCoords",
+              JSON.stringify(location.coords)
+            );
+            console.log("set user");
+          } catch (e) {
+            console.log("set user error");
+          }
+          dispatch(UserSlice.actions.updateUserLocation(location));
+        }
+      } catch (e) {
+        // error reading value
+        console.log("get user error");
+      }
+
+      setLoading(false);
     };
-    if (!user.coords) getUserLocation();
+    getUserLocation();
   }, []);
 
   const database = getDatabase();
@@ -35,57 +72,72 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     onValue(dataRef, (snapshot) => {
+      // setLoading(true)
       const data = snapshot.val();
-      // dispatch(ItemsSlice.actions.fetchItem(data));
-      console.log(data);
+
+      const origin = user.coords;
+      if (!origin) dispatch(ItemsSlice.actions.fetchItem(data));
+      else {
+        dispatch(ItemsSlice.actions.resetState());
+        data.map(async (item) => {
+          const destination = { latitude: item.lat, longitude: item.lng };
+          const mode = "driving";
+          const url =
+            "https://maps.googleapis.com/maps/api/distancematrix/json?" +
+            "destinations=" +
+            destination.latitude +
+            "," +
+            destination.longitude +
+            "&mode=" +
+            mode +
+            "&origins=" +
+            origin.latitude +
+            "," +
+            origin.longitude +
+            "&key=" +
+            GOOGLE_MAPS_APIKEY;
+          const response = await fetch(url)
+            .then((res) => res.json())
+            .then((data) => {
+              // console.log("fetch data");
+              // console.log(data);
+              return data;
+            });
+          if (
+            response.status == "OK" &&
+            response.rows[0].elements[0].status == "OK"
+          ) {
+            console.log("OK");
+            dispatch(
+              ItemsSlice.actions.addItem({
+                ...item,
+                name: "Item 1",
+                distance: response.rows[0].elements[0].distance,
+                latestLocation: response.destination_addresses[0],
+              })
+            );
+          } else {
+            console.log("NO OK");
+            dispatch(ItemsSlice.actions.addItem({ ...item, name: "Item 1" }));
+          }
+        });
+      }
+      // dispatch(
+      //   ItemsSlice.actions.fetchItem({ items: data, userCoords: user.coords })
+      // );
+      // console.log("data");
+      // console.log(data);
     });
+  }, [user]);
 
-    // const fetchUserItems = async () => {
-
-    //   // const CLONE = [
-    //   //   {
-    //   //     id: 1,
-    //   //     name: "Item 1",
-    //   //     address: "229 Andrew Dr Manning, South Carolina(SC), 29102",
-    //   //     imgUrl: "",
-    //   //     latestLocation: "229 Andrew Dr Manning, South Carolina(SC), 29102",
-    //   //     lng: 106.4150392,
-    //   //     lat: 10.7546664,
-    //   //     mode: 0,
-    //   //   },
-    //   //   {
-    //   //     id: 2,
-    //   //     name: "Item 2",
-    //   //     address: "229 Andrew Dr Manning, South Carolina(SC), 29102",
-    //   //     lng: 106.789,
-    //   //     imgUrl: "",
-    //   //     latestLocation: "229 Andrew Dr Manning, South Carolina(SC), 29102",
-    //   //     lat: 10.459,
-    //   //     mode: 1,
-    //   //   },
-    //   //   {
-    //   //     id: 3,
-    //   //     name: "Item 3",
-    //   //     address: "229 Andrew Dr Manning, South Carolina(SC), 29102",
-    //   //     lng: 106.789,
-    //   //     imgUrl: "",
-    //   //     latestLocation: "229 Andrew Dr Manning, South Carolina(SC), 29102",
-    //   //     lat: 10.459,
-    //   //     mode: 2,
-    //   //   },
-    //   // ];
-    // };
-    // fetchUserItems();
-    // console.log(itemList);
-  }, [dataRef]);
-
-  // if (!user.coords) return <Text>Loading</Text>;
-
+  if (loading) return <Text>Loading</Text>;
+  // console.log("item list");
+  // console.log(itemList);
   return (
-    // <Home navigation={navigation} coords={user.coords} itemList={itemList} />
-    <View>
-      <Text>Home Screen</Text>
-    </View>
+    <Home navigation={navigation} coords={user.coords} itemList={itemList} />
+    // <View>
+    //   <Text>Home Screen</Text>
+    // </View>
   );
 };
 

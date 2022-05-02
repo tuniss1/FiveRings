@@ -50,34 +50,7 @@ const ItemScreen = ({ navigation, route: { params } }) => {
   // console.log("dest");
   // console.log(destination);
 
-  const [distance, setDistance] = useState(null);
-  useEffect(() => {
-    const getDistance = async () => {
-      const mode = "driving";
-      const url =
-        "https://maps.googleapis.com/maps/api/distancematrix/json?" +
-        "destinations=" +
-        destination.latitude +
-        "," +
-        destination.longitude +
-        "&mode=" +
-        mode +
-        "&origins=" +
-        origin.latitude +
-        "," +
-        origin.longitude +
-        "&key=" +
-        GOOGLE_MAPS_APIKEY;
-      const response = await fetch(url)
-        .then((res) => res.json())
-        .then((data) => {
-          return data;
-        });
-      if (response.rows[0].elements[0].status == "OK")
-        setDistance(response.rows[0].elements[0].distance.text);
-    };
-    getDistance();
-  }, []);
+  // console.log(params);
 
   // renders
   return (
@@ -112,7 +85,10 @@ const ItemScreen = ({ navigation, route: { params } }) => {
             />
           </View>
           <ItemCard itemName={params.name} nailStatus={params.mode} />
-          <PositionCard position={params.latestAddress} distance={distance} />
+          <PositionCard
+            position={params.latestLocation}
+            distance={params.distance}
+          />
           {isTracking ? (
             <StopTrackingItemCard setIsTracking={setIsTracking} />
           ) : (

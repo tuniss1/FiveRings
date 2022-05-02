@@ -4,7 +4,7 @@ const PositionCard = ({ position, distance }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
-        Latest position{distance ? ` (${distance})` : ""}:{" "}
+        Latest position{distance ? ` (${distance.text})` : ""}:{" "}
       </Text>
       <Text style={styles.desc}>{position}</Text>
     </View>

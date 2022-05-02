@@ -8,16 +8,14 @@ const Item = ({ item, navigation, userCoords, index }) => {
     <TouchableOpacity
       onPress={() =>
         navigation.navigate("Item", {
-          index: index,
           id: item.id,
           name: item.name,
-          address: item.address,
           itemCoords: {
             latitude: item.lat,
             longitude: item.lng,
           },
           mode: item.mode,
-          latestAddress: item.latestLocation,
+          latestLocation: item.latestLocation,
           userCoords: userCoords,
         })
       }

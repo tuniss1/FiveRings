@@ -17,7 +17,12 @@ export default ItemsSlice = createSlice({
     addItem: (state, action) => {
       state.push(action.payload);
     }, // => { type: 'itemList/addItem' }
-    fetchItem: (state, action) => action.payload,
+    fetchItem: (state, action) => {
+      // console.log("fetch Item");
+      // console.log(action.payload);
+      return action.payload;
+    },
+    resetState: (state, action) => [],
   },
 });
 

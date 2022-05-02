@@ -6,9 +6,11 @@ import {
   ScrollView,
   Dimensions,
   FlatList,
+  TouchableOpacity,
 } from "react-native";
 import { Title } from "react-native-paper";
 import Item from "./Item";
+import TrackingNotification from "./TrackingNotification";
 import MapView, { Marker } from "react-native-maps";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 
@@ -32,46 +34,64 @@ const Home = ({ navigation, coords, itemList }) => {
   const handleSheetChanges = useCallback((index) => {
     // console.log("handleSheetChanges", index);
   }, []);
+  const [index, setIndex] = useState(0);
+  const [showNotify, setShowNotify] = useState(true);
+  const showModal = () => {
+    setShowNotify(true);
+  };
 
   // renders
   return (
-    <View style={styles.container}>
-      <MapView initialRegion={coordinates} style={styles.mapContainer}>
-        <Marker coordinate={coordinates}></Marker>
-      </MapView>
-      <BottomSheet
-        ref={bottomSheetRef}
-        index={0}
-        snapPoints={snapPoints}
-        onChange={handleSheetChanges}
-      >
-        <BottomSheetView style={{ marginBottom: -16 }}>
-          <View style={{ alignItems: "center", padding: 4 }}>
-            <Title>List Items</Title>
-          </View>
-          <View
-            style={{
-              height: 1,
-              backgroundColor: "#E7E7E5",
-              opacity: 0.5,
-            }}
-          ></View>
-          <FlatList
-            data={itemList}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item, index }) => (
-              <Item
-                item={item}
-                navigation={navigation}
-                userCoords={coords}
-                index={index}
-              />
-            )}
-            style={{ height: "100%" }}
-          />
-        </BottomSheetView>
-      </BottomSheet>
-    </View>
+    <>
+      <View style={styles.container}>
+        <TrackingNotification
+          showNotify={showNotify}
+          setShowNotify={setShowNotify}
+          setIndex={setIndex}
+        />
+        {coords && (
+          <MapView initialRegion={coordinates} style={styles.mapContainer}>
+            <Marker coordinate={coordinates}></Marker>
+          </MapView>
+        )}
+
+        <BottomSheet
+          ref={bottomSheetRef}
+          index={index}
+          snapPoints={snapPoints}
+          onChange={handleSheetChanges}
+        >
+          <BottomSheetView style={{ marginBottom: -16 }}>
+            <View style={{ alignItems: "center", padding: 4 }}>
+              <TouchableOpacity onPress={showModal}>
+                <Text>HAHAHAH</Text>
+              </TouchableOpacity>
+              <Title>List Items</Title>
+            </View>
+            <View
+              style={{
+                height: 1,
+                backgroundColor: "#E7E7E5",
+                opacity: 0.5,
+              }}
+            ></View>
+            <FlatList
+              data={itemList}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item, index }) => (
+                <Item
+                  item={item}
+                  navigation={navigation}
+                  userCoords={coords}
+                  index={index}
+                />
+              )}
+              // style={{ height: "100%" }}
+            />
+          </BottomSheetView>
+        </BottomSheet>
+      </View>
+    </>
   );
 };
 
