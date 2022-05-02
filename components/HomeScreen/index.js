@@ -35,7 +35,7 @@ const Home = ({ navigation, coords, itemList }) => {
     // console.log("handleSheetChanges", index);
   }, []);
   const [index, setIndex] = useState(0);
-  const [showNotify, setShowNotify] = useState(true);
+  const [showNotify, setShowNotify] = useState(false);
   const showModal = () => {
     setShowNotify(true);
   };

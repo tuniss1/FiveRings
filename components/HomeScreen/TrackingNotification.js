@@ -58,7 +58,7 @@ const TrackingNotification = ({ showNotify, setShowNotify, setIndex }) => {
 
 const styles = StyleSheet.create({
   modalContainer: {
-    flex: 1,
+    // flex: 1,
     backgroundColor: "white",
     margin: 20,
     borderRadius: 10,

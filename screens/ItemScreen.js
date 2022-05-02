@@ -19,6 +19,8 @@ import StopFindingItemCard from "components/ItemScreen/StopFindingItemCard";
 import DeleteItemCard from "components/ItemScreen/DeleteItemCard";
 import MapViewDirections from "react-native-maps-directions";
 
+import { updateControl } from "firebases/realtimeApi";
+
 const GOOGLE_MAPS_APIKEY = "AIzaSyAPpibb8QB3CR0B2m5ZBkBrRS75YluhNi8";
 
 const ItemScreen = ({ navigation, route: { params } }) => {
@@ -27,7 +29,7 @@ const ItemScreen = ({ navigation, route: { params } }) => {
   const snapPoints = useMemo(() => ["25%", "50%", "75%"], []);
 
   const [isTracking, setIsTracking] = useState(params.mode !== 0);
-  const [isFinding, setIsFinding] = useState(params.mode === 2);
+  const [isFinding, setIsFinding] = useState(params.mode >= 2);
 
   // region start at user position
   const region = {
@@ -51,6 +53,12 @@ const ItemScreen = ({ navigation, route: { params } }) => {
   // console.log(destination);
 
   // console.log(params);
+
+  useEffect(() => {
+    if (!isTracking && !isFinding) updateControl({ id: params.id, mode: 0 });
+    else if (isTracking) updateControl({ id: params.id, mode: 1 });
+    else updateControl({ id: params.id, mode: 2 });
+  }, [isTracking, isFinding]);
 
   // renders
   return (

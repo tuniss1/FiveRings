@@ -111,14 +111,13 @@ const HomeScreen = ({ navigation }) => {
             dispatch(
               ItemsSlice.actions.addItem({
                 ...item,
-                name: "Item 1",
                 distance: response.rows[0].elements[0].distance,
                 latestLocation: response.destination_addresses[0],
               })
             );
           } else {
             console.log("NO OK");
-            dispatch(ItemsSlice.actions.addItem({ ...item, name: "Item 1" }));
+            dispatch(ItemsSlice.actions.addItem({ ...item }));
           }
         });
       }
@@ -131,8 +130,8 @@ const HomeScreen = ({ navigation }) => {
   }, [user]);
 
   if (loading) return <Text>Loading</Text>;
-  // console.log("item list");
-  // console.log(itemList);
+  console.log("item list");
+  console.log(itemList);
   return (
     <Home navigation={navigation} coords={user.coords} itemList={itemList} />
     // <View>
