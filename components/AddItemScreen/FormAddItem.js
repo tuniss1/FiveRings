@@ -3,7 +3,6 @@ import { View, StyleSheet, Text } from "react-native";
 import { TextInput, HelperText, Button } from "react-native-paper";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import ItemImagePicker from "./ItemImagePicker";
 
 const FormAddItem = () => {
   const [image, setImage] = useState(null);
@@ -17,16 +16,10 @@ const FormAddItem = () => {
 
   return (
     <View style={styles.container}>
-      <ItemImagePicker image={image} setImage={setImage} />
       <Formik
         initialValues={{ itemName: "", itemId: "" }}
         validationSchema={itemSchema}
         onSubmit={(values, actions) => {
-          if (image) {
-            values = { ...values, image: image };
-          } else {
-            values = { ...values, image: "" };
-          }
           console.log(values);
           actions.setSubmitting(false);
         }}
@@ -76,7 +69,11 @@ const FormAddItem = () => {
             >
               {errors.itemId}
             </HelperText>
-            <Button mode="contained" onPress={handleSubmit}>
+            <Button
+              mode="contained"
+              onPress={handleSubmit}
+              style={styles.btnSubmit}
+            >
               Add item
             </Button>
           </View>
@@ -91,6 +88,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   title: {},
+  btnSubmit: {
+    paddingVertical: 3,
+    marginTop: 25,
+  },
 });
 
 export default FormAddItem;

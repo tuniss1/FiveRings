@@ -2,8 +2,9 @@ import React from "react";
 import { View, TouchableOpacity, StyleSheet } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { Avatar } from "react-native-paper";
+import { updateUserAvatar, uploadImageAsync } from "firebases/firestoreApi";
 
-const ItemImagePicker = ({ image, setImage }) => {
+const ItemImagePicker = ({ image, setImage, uid = "" }) => {
   const pickImage = async () => {
     let permissionResult =
       await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -22,6 +23,13 @@ const ItemImagePicker = ({ image, setImage }) => {
 
     if (!result.cancelled) {
       setImage(result.uri);
+      if (uid) {
+        await uploadImageAsync(uid, result.uri)
+          .then((imgUrl) => {
+            updateUserAvatar(imgUrl, uid);
+          })
+          .catch((e) => console.log(e));
+      }
     }
   };
 

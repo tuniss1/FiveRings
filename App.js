@@ -7,6 +7,7 @@ import MainScreen from "screens/MainScreen";
 import ItemScreen from "screens/ItemScreen";
 import SignUpScreen from "screens/SignUpScreen";
 import SignInScreen from "screens/SignInScreen";
+import UserScreen from "screens/UserScreen";
 import ResetPasswordScreen from "screens/ResetPasswordScreen";
 import store from "./reduxTKit/store";
 
@@ -48,6 +49,7 @@ const App = () => {
               <>
                 <Stack.Screen name="Main" component={MainScreen} />
                 <Stack.Screen name="Item" component={ItemScreen} />
+                <Stack.Screen name="User" component={UserScreen} />
               </>
             ) : (
               <>
