@@ -22,11 +22,6 @@ const Home = ({ navigation, coords, itemList }) => {
   // variables
   const snapPoints = useMemo(() => ["8%", "60%", "80%"], []);
 
-  // callbacks
-  const handleSheetChanges = useCallback((index) => {
-    // console.log("handleSheetChanges", index);
-  }, []);
-
   const coordinates = {
     ...coords,
     latitudeDelta: 0.01,
@@ -61,12 +56,7 @@ const Home = ({ navigation, coords, itemList }) => {
         </MapView>
       )}
       {!showNotify && (
-        <BottomSheet
-          ref={bottomSheetRef}
-          index={0}
-          snapPoints={snapPoints}
-          onChange={handleSheetChanges}
-        >
+        <BottomSheet ref={bottomSheetRef} index={0} snapPoints={snapPoints}>
           <BottomSheetView>
             <View style={{ alignItems: "center", padding: 4 }}>
               <Title>List Items</Title>
