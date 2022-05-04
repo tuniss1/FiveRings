@@ -16,10 +16,8 @@ const Home = ({ navigation, coords, itemList }) => {
   const [itemNotify, setItemNotify] = useState({});
   const [showNotify, setShowNotify] = useState(false);
 
-  // ref
+  // Setup BottomSheet:
   const bottomSheetRef = useRef(null);
-
-  // variables
   const snapPoints = useMemo(() => ["8%", "60%", "80%"], []);
 
   const coordinates = {
