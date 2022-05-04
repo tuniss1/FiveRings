@@ -1,39 +1,38 @@
 import Home from "components/HomeScreen";
-import { getDatabase, onValue, ref, update, push } from "firebase/database";
+import { getDatabase, onValue, ref } from "firebase/database";
 import React, { useState, useEffect } from "react";
-import { Text, View } from "react-native";
+import { Text } from "react-native";
 import * as Location from "expo-location";
 import { useSelector, useDispatch } from "react-redux";
 import { itemListSelector, userSelector } from "reduxTKit/selectors";
 import UserSlice from "reduxTKit/reducers/UserSlice";
 import ItemsSlice from "reduxTKit/reducers/ItemsSlice";
-import { getLatLng } from "firebases/realtimeApi";
+// import { getLatLng } from "firebases/realtimeApi";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const GOOGLE_MAPS_APIKEY = "AIzaSyAPpibb8QB3CR0B2m5ZBkBrRS75YluhNi8";
 
 const HomeScreen = ({ navigation }) => {
+  const db = getDatabase();
+  const dataRef = ref(db, "user/nam/sensor");
   const user = useSelector(userSelector);
   const itemList = useSelector(itemListSelector);
   const dispatch = useDispatch();
-  // const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
+  const [errorMsg, setErrorMsg] = useState();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getUserLocation = async () => {
       setLoading(true);
-
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
         return;
       }
       let location = await Location.getCurrentPositionAsync({});
-
       try {
         const value = await AsyncStorage.getItem("userCoords");
-        console.log("get user");
+        console.log("Getting user coordinate ...");
         console.log(value);
         if (value !== null) {
           // value previously stored
@@ -47,34 +46,33 @@ const HomeScreen = ({ navigation }) => {
           }
         } else {
           try {
-            await AsyncStorage.setItem(
-              "userCoords",
-              JSON.stringify(location.coords)
-            );
-            console.log("set user");
+            console.log("Setting user coordinate");
+            await AsyncStorage.setItem("userCoords", JSON.stringify(location));
           } catch (e) {
-            console.log("set user error");
+            console.log("Fail to set user coordinate");
           }
           dispatch(UserSlice.actions.updateUserLocation(location));
         }
       } catch (e) {
         // error reading value
-        console.log("get user error");
+        console.log("Fail to get user coordinate");
+        try {
+          console.log("Setting user coordinate");
+          await AsyncStorage.setItem("userCoords", JSON.stringify(location));
+        } catch (e) {
+          console.log("Fail to set user coordinate");
+        }
+        dispatch(UserSlice.actions.updateUserLocation(location));
       }
-
       setLoading(false);
     };
     getUserLocation();
   }, []);
 
-  const database = getDatabase();
-  const dataRef = ref(database, "user/nam/sensor");
-
   useEffect(() => {
     onValue(dataRef, (snapshot) => {
-      // setLoading(true)
-      const data = snapshot.val();
-
+      let data = snapshot.val();
+      data = data.filter((item) => item != undefined);
       const origin = user.coords;
       if (!origin) dispatch(ItemsSlice.actions.fetchItem(data));
       else {
@@ -98,16 +96,12 @@ const HomeScreen = ({ navigation }) => {
             GOOGLE_MAPS_APIKEY;
           const response = await fetch(url)
             .then((res) => res.json())
-            .then((data) => {
-              // console.log("fetch data");
-              // console.log(data);
-              return data;
-            });
+            .then((data) => data);
           if (
             response.status == "OK" &&
             response.rows[0].elements[0].status == "OK"
           ) {
-            console.log("OK");
+            console.log("Success getting location and distance.");
             dispatch(
               ItemsSlice.actions.addItem({
                 ...item,
@@ -116,27 +110,18 @@ const HomeScreen = ({ navigation }) => {
               })
             );
           } else {
-            console.log("NO OK");
+            console.log("Fail to get location and distance.");
             dispatch(ItemsSlice.actions.addItem({ ...item }));
           }
         });
       }
-      // dispatch(
-      //   ItemsSlice.actions.fetchItem({ items: data, userCoords: user.coords })
-      // );
-      // console.log("data");
-      // console.log(data);
     });
   }, [user]);
 
   if (loading) return <Text>Loading</Text>;
-  console.log("item list");
-  console.log(itemList);
+
   return (
     <Home navigation={navigation} coords={user.coords} itemList={itemList} />
-    // <View>
-    //   <Text>Home Screen</Text>
-    // </View>
   );
 };
 

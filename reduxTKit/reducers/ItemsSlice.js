@@ -15,14 +15,13 @@ export default ItemsSlice = createSlice({
   ],
   reducers: {
     addItem: (state, action) => {
-      state.push(action.payload);
+      if (action.payload) state.push(action.payload);
     }, // => { type: 'itemList/addItem' }
     fetchItem: (state, action) => {
-      // console.log("fetch Item");
-      // console.log(action.payload);
-      return action.payload;
-    },
+      if (action.payload) return action.payload;
+    }, // => { type: 'itemList/fetchItem' }
     resetState: (state, action) => [],
+    // => { type: 'itemList/resetState' }
   },
 });
 

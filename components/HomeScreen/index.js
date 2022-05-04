@@ -1,14 +1,6 @@
 import React, { useState, useCallback, useMemo, useRef } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  Dimensions,
-  FlatList,
-  TouchableOpacity,
-} from "react-native";
-import { Title } from "react-native-paper";
+import { View, StyleSheet, Dimensions, FlatList } from "react-native";
+import { Title, Button } from "react-native-paper";
 import Item from "./Item";
 import TrackingNotification from "./TrackingNotification";
 import MapView, { Marker } from "react-native-maps";
@@ -34,7 +26,6 @@ const Home = ({ navigation, coords, itemList }) => {
   const handleSheetChanges = useCallback((index) => {
     // console.log("handleSheetChanges", index);
   }, []);
-  const [index, setIndex] = useState(0);
   const [showNotify, setShowNotify] = useState(false);
   const showModal = () => {
     setShowNotify(true);
@@ -42,42 +33,28 @@ const Home = ({ navigation, coords, itemList }) => {
 
   // renders
   return (
-    <>
-      <View style={styles.container}>
-        <TrackingNotification
-          showNotify={showNotify}
-          setShowNotify={setShowNotify}
-          setIndex={setIndex}
-        />
-        {coords && (
-          <MapView initialRegion={coordinates} style={styles.mapContainer}>
-            <Marker coordinate={coordinates}></Marker>
-          </MapView>
-        )}
-
+    <View style={styles.container}>
+      {showNotify && <TrackingNotification setShowNotify={setShowNotify} />}
+      {!showNotify && coords && (
+        <MapView initialRegion={coordinates} style={styles.mapContainer}>
+          <Marker coordinate={coordinates}></Marker>
+        </MapView>
+      )}
+      {!showNotify && (
         <BottomSheet
           ref={bottomSheetRef}
-          index={index}
+          index={0}
           snapPoints={snapPoints}
           onChange={handleSheetChanges}
         >
-          <BottomSheetView style={{ marginBottom: -16 }}>
+          <BottomSheetView>
             <View style={{ alignItems: "center", padding: 4 }}>
-              <TouchableOpacity onPress={showModal}>
-                <Text>HAHAHAH</Text>
-              </TouchableOpacity>
               <Title>List Items</Title>
             </View>
-            <View
-              style={{
-                height: 1,
-                backgroundColor: "#E7E7E5",
-                opacity: 0.5,
-              }}
-            ></View>
+            <View style={styles.separator} />
             <FlatList
               data={itemList}
-              keyExtractor={(item) => item.id}
+              keyExtractor={(item, idx) => idx}
               renderItem={({ item, index }) => (
                 <Item
                   item={item}
@@ -86,12 +63,12 @@ const Home = ({ navigation, coords, itemList }) => {
                   index={index}
                 />
               )}
-              // style={{ height: "100%" }}
             />
+            <Button onPress={showModal}>Open modal</Button>
           </BottomSheetView>
         </BottomSheet>
-      </View>
-    </>
+      )}
+    </View>
   );
 };
 
@@ -106,6 +83,11 @@ const styles = StyleSheet.create({
   mapContainer: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
+  },
+  separator: {
+    height: 1,
+    backgroundColor: "#E7E7E5",
+    opacity: 0.5,
   },
 });
 
