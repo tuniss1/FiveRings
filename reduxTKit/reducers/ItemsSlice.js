@@ -2,17 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export default ItemsSlice = createSlice({
   name: "itemList",
-  initialState: [
-    // {
-    //   id: String(),
-    //   imgUrl: String(),
-    //   lng: Number(),
-    //   lat: Number(),
-    //   latestLocation: String(),
-    //   mode: Number(),
-    //   name: String(),
-    // },
-  ],
+  initialState: [],
   reducers: {
     addItem: (state, action) => {
       if (action.payload) state.push(action.payload);
@@ -26,6 +16,15 @@ export default ItemsSlice = createSlice({
 });
 
 /* 
+  item = {
+    id: String(),
+    imgUrl: String(),
+    lng: Number(),
+    lat: Number(),
+    latestLocation: String(),
+    mode: Number(),
+    name: String(),
+  }
   NOTE: To call the action addItem in UI:
   1. Import file:
     import ItemsSlice from 'redux/reducers/ItemsSlice'

@@ -28,8 +28,8 @@ const ItemScreen = ({ navigation, route: { params } }) => {
   const bottomSheetRef = useRef(null);
   const snapPoints = useMemo(() => ["25%", "50%", "75%"], []);
 
-  const [isTracking, setIsTracking] = useState(params.mode !== 0);
-  const [isFinding, setIsFinding] = useState(params.mode >= 2);
+  const [isTracking, setIsTracking] = useState(params.mode > 0);
+  const [isFinding, setIsFinding] = useState(params.mode == 2);
 
   // region start at user position
   const region = {
@@ -46,18 +46,20 @@ const ItemScreen = ({ navigation, route: { params } }) => {
   // latitude + longitude cua item tren firebase bi loi
   const destination = params.itemCoords;
 
-  // console.log(params);
-  // console.log("origin");
-  // console.log(origin);
-  // console.log("dest");
-  // console.log(destination);
-
-  // console.log(params);
-
   useEffect(() => {
-    if (!isTracking && !isFinding) updateControl({ id: params.id, mode: 0 });
-    else if (isTracking) updateControl({ id: params.id, mode: 1 });
-    else updateControl({ id: params.id, mode: 2 });
+    if (isTracking) {
+      // Change to mode 1 (track object location):
+      if (!isFinding) {
+        updateControl({ id: params.id, mode: 1 });
+      }
+      // Change to mode 2 (direct to object location):
+      else {
+        updateControl({ id: params.id, mode: 2 });
+      }
+    } else {
+      // Change to mode 0 (untrack object location):
+      updateControl({ id: params.id, mode: 0 });
+    }
   }, [isTracking, isFinding]);
 
   // renders

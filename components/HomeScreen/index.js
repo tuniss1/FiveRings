@@ -1,40 +1,60 @@
-import React, { useState, useCallback, useMemo, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  useRef,
+} from "react";
 import { View, StyleSheet, Dimensions, FlatList } from "react-native";
-import { Title, Button } from "react-native-paper";
+import { Title } from "react-native-paper";
 import Item from "./Item";
 import TrackingNotification from "./TrackingNotification";
 import MapView, { Marker } from "react-native-maps";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 
-const MIN_HEIGHT = 70;
-const MAX_HEIGHT = Dimensions.get("window").height * 0.55;
-
 const Home = ({ navigation, coords, itemList }) => {
+  const [itemNotify, setItemNotify] = useState({});
+  const [showNotify, setShowNotify] = useState(false);
+
+  // ref
+  const bottomSheetRef = useRef(null);
+
+  // variables
+  const snapPoints = useMemo(() => ["8%", "60%", "80%"], []);
+
+  // callbacks
+  const handleSheetChanges = useCallback((index) => {
+    // console.log("handleSheetChanges", index);
+  }, []);
+
   const coordinates = {
     ...coords,
     latitudeDelta: 0.01,
     longitudeDelta: 0.01 * (Dimensions.get("window").width / 225),
   };
 
-  // ref
-  const bottomSheetRef = useRef(null);
-
-  // variables
-  const snapPoints = useMemo(() => [MIN_HEIGHT, MAX_HEIGHT], []);
-
-  // callbacks
-  const handleSheetChanges = useCallback((index) => {
-    // console.log("handleSheetChanges", index);
-  }, []);
-  const [showNotify, setShowNotify] = useState(false);
-  const showModal = () => {
-    setShowNotify(true);
-  };
+  useEffect(() => {
+    const handleNotify = () => {
+      for (const item of itemList) {
+        if (item.mode == 3) {
+          setShowNotify(true);
+          setItemNotify(item);
+          break;
+        }
+      }
+    };
+    handleNotify();
+  }, [itemList]);
 
   // renders
   return (
     <View style={styles.container}>
-      {showNotify && <TrackingNotification setShowNotify={setShowNotify} />}
+      {showNotify && (
+        <TrackingNotification
+          setShowNotify={setShowNotify}
+          itemNotify={itemNotify}
+        />
+      )}
       {!showNotify && coords && (
         <MapView initialRegion={coordinates} style={styles.mapContainer}>
           <Marker coordinate={coordinates}></Marker>
@@ -64,7 +84,6 @@ const Home = ({ navigation, coords, itemList }) => {
                 />
               )}
             />
-            <Button onPress={showModal}>Open modal</Button>
           </BottomSheetView>
         </BottomSheet>
       )}

@@ -7,7 +7,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { itemListSelector, userSelector } from "reduxTKit/selectors";
 import UserSlice from "reduxTKit/reducers/UserSlice";
 import ItemsSlice from "reduxTKit/reducers/ItemsSlice";
-// import { getLatLng } from "firebases/realtimeApi";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const GOOGLE_MAPS_APIKEY = "AIzaSyAPpibb8QB3CR0B2m5ZBkBrRS75YluhNi8";

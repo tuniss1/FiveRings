@@ -1,9 +1,16 @@
 import React from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 import { Title, Button, Surface } from "react-native-paper";
+import { updateControl } from "firebases/realtimeApi";
 
-const TrackingNotification = ({ setShowNotify }) => {
-  const hideModal = () => setShowNotify(false);
+const TrackingNotification = ({ setShowNotify, itemNotify }) => {
+  const handleIgnore = () => {
+    setShowNotify(false);
+    updateControl({
+      id: itemNotify.id,
+      mode: 0,
+    });
+  };
 
   return (
     <View style={styles.modalContainer}>
@@ -16,7 +23,9 @@ const TrackingNotification = ({ setShowNotify }) => {
         </View>
         <View style={{ alignItems: "center", paddingVertical: 20 }}>
           <Title style={styles.textStyle}>Warning!</Title>
-          <Text style={styles.textStyle}>Your item can be lost.</Text>
+          <Text
+            style={styles.textStyle}
+          >{`Your item: ${itemNotify.name} can be lost.`}</Text>
           <Text style={styles.textStyle}>
             Do you want to enable finding mode ?
           </Text>
@@ -32,7 +41,7 @@ const TrackingNotification = ({ setShowNotify }) => {
               mode="contained"
               color="#ffffff"
               style={{ marginHorizontal: 10 }}
-              onPress={hideModal}
+              onPress={handleIgnore}
             >
               <Text style={{ color: "#f85454" }}>Ignore</Text>
             </Button>

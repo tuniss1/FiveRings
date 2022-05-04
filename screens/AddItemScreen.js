@@ -20,7 +20,7 @@ const coordinate = {
 const AddItemScreen = ({ navigation }) => {
   // Setup BottomSheet:
   const bottomSheetRef = useRef(null);
-  const snapPoints = useMemo(() => ["10%", "80%"], []);
+  const snapPoints = useMemo(() => ["8%", "60%", "80%"], []);
 
   // renders
   return (
