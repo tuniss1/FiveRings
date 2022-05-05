@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import ItemsSlice from "./reducers/ItemsSlice";
 import UserSlice from "./reducers/UserSlice";
+import MapSettingSlice from "./reducers/MapSettingSlice";
 
 /*
   To take the itemList from the store in UI:
@@ -14,6 +15,7 @@ const store = configureStore({
   reducer: {
     user: UserSlice.reducer,
     itemList: ItemsSlice.reducer,
+    mapSetting: MapSettingSlice.reducer,
   },
 });
 

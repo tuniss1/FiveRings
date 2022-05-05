@@ -61,7 +61,7 @@ const ItemScreen = ({ navigation, route: { params } }) => {
   const destination = params.itemCoords;
 
   const handleRegionChangeComplete = (region) => {
-    dispatch(MapSettingSlice.actions.setMapSetting(region));
+    dispatch(MapSettingSlice.actions.updateMapSetting(region));
   };
 
   useEffect(() => {

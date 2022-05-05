@@ -1,15 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { Dimensions } from "react-native";
 
 export default MapSettingSlice = createSlice({
   name: "mapSetting",
   initialState: {
-    latitude: null,
-    latitudeDelta: null,
-    longitude: null,
-    longitudeDelta: null,
+    latitude: 0,
+    longitude: 0,
+    latitudeDelta: 0.01,
+    longitudeDelta: 0.01 * (Dimensions.get("window").width / 225),
   },
   reducers: {
-    setMapSetting: (state, action) => action.payload, // => { type: 'mapSetting/setMapSetting' }
+    // setMapSetting: (state, action) => {
+    //   return { ...state, ...action.payload };
+    // }, // => { type: 'mapSetting/setMapSetting' }
+    updateMapSetting: (state, action) => {
+      return { ...state, ...action.payload };
+    }, // => { type: 'mapSetting/updateMapSetting' }
   },
 });
 

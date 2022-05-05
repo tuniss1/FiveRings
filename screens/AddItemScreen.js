@@ -1,6 +1,6 @@
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef } from "react";
 import { View, StyleSheet, Dimensions } from "react-native";
-import { Title } from "react-native-paper";
+import { Title, Avatar } from "react-native-paper";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import MapView, { Marker } from "react-native-maps";
 import FormAddItem from "components/AddItemScreen/FormAddItem";
@@ -33,7 +33,7 @@ const AddItemScreen = ({ navigation }) => {
   };
 
   const handleRegionChangeComplete = (region) => {
-    dispatch(MapSettingSlice.actions.setMapSetting(region));
+    dispatch(MapSettingSlice.actions.updateMapSetting(region));
   };
 
   // renders
@@ -58,6 +58,13 @@ const AddItemScreen = ({ navigation }) => {
               opacity: 0.5,
             }}
           />
+          <View style={styles.imgWrapper}>
+            <Avatar.Image
+              size={90}
+              source={require("assets/item-icon.jpg")}
+              style={styles.itemImg}
+            />
+          </View>
           <FormAddItem />
         </BottomSheetView>
       </BottomSheet>
@@ -78,6 +85,15 @@ const styles = StyleSheet.create({
   mapContainer: {
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height,
+  },
+  imgWrapper: {
+    paddingVertical: 15,
+    alignItems: "center",
+  },
+  itemImg: {
+    backgroundColor: "#ffffff",
+    borderColor: "#CCCDC6",
+    borderWidth: 1,
   },
 });
 
