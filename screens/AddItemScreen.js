@@ -4,28 +4,46 @@ import { Title } from "react-native-paper";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import MapView, { Marker } from "react-native-maps";
 import FormAddItem from "components/AddItemScreen/FormAddItem";
-
-const region = {
-  latitude: 10.3596469,
-  longitude: 107.0968701,
-  latitudeDelta: 0.0922,
-  longitudeDelta: 0.0421,
-};
-
-const coordinate = {
-  latitude: 10.3596469,
-  longitude: 107.0968701,
-};
+import { useSelector, useDispatch } from "react-redux";
+import { mapSettingSelector, userSelector } from "reduxTKit/selectors";
+import MapSettingSlice from "reduxTKit/reducers/MapSettingSlice";
 
 const AddItemScreen = ({ navigation }) => {
   // Setup BottomSheet:
   const bottomSheetRef = useRef(null);
   const snapPoints = useMemo(() => ["8%", "60%", "80%"], []);
 
+  const mapSetting = useSelector(mapSettingSelector);
+  const user = useSelector(userSelector);
+  const dispatch = useDispatch();
+
+  const checkIsValid = () => mapSetting && mapSetting.latitude;
+
+  const region = checkIsValid()
+    ? mapSetting
+    : {
+        ...user.coords,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01 * (Dimensions.get("window").width / 225),
+      };
+
+  const coordinate = {
+    latitude: user.coords.latitude,
+    longitude: user.coords.longitude,
+  };
+
+  const handleRegionChangeComplete = (region) => {
+    dispatch(MapSettingSlice.actions.setMapSetting(region));
+  };
+
   // renders
   return (
     <View style={styles.container}>
-      <MapView region={region} style={styles.mapContainer}>
+      <MapView
+        region={region}
+        style={styles.mapContainer}
+        onRegionChangeComplete={handleRegionChangeComplete}
+      >
         <Marker coordinate={coordinate} />
       </MapView>
       <BottomSheet ref={bottomSheetRef} index={1} snapPoints={snapPoints}>

@@ -19,6 +19,9 @@ import StopFindingItemCard from "components/ItemScreen/StopFindingItemCard";
 import DeleteItemCard from "components/ItemScreen/DeleteItemCard";
 import MapViewDirections from "react-native-maps-directions";
 
+import { useSelector, useDispatch } from "react-redux";
+import { mapSettingSelector } from "reduxTKit/selectors";
+
 import { updateControl } from "firebases/realtimeApi";
 
 const GOOGLE_MAPS_APIKEY = "AIzaSyAPpibb8QB3CR0B2m5ZBkBrRS75YluhNi8";
@@ -31,12 +34,23 @@ const ItemScreen = ({ navigation, route: { params } }) => {
   const [isTracking, setIsTracking] = useState(params.mode > 0);
   const [isFinding, setIsFinding] = useState(params.mode == 2);
 
+  const mapSetting = useSelector(mapSettingSelector);
+  const dispatch = useDispatch();
+
+  const checkIsValid = () => mapSetting && mapSetting.latitude;
+
   // region start at user position
-  const region = {
-    ...params.userCoords,
-    latitudeDelta: 0.01,
-    longitudeDelta: 0.01 * (Dimensions.get("window").width / 225),
-  };
+  const region = checkIsValid()
+    ? {
+        ...params.userCoords,
+        latitudeDelta: mapSetting.latitudeDelta,
+        longitudeDelta: mapSetting.longitudeDelta,
+      }
+    : {
+        ...params.userCoords,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01 * (Dimensions.get("window").width / 225),
+      };
 
   const origin = {
     latitude: params.userCoords.latitude,
@@ -45,6 +59,10 @@ const ItemScreen = ({ navigation, route: { params } }) => {
 
   // latitude + longitude cua item tren firebase bi loi
   const destination = params.itemCoords;
+
+  const handleRegionChangeComplete = (region) => {
+    dispatch(MapSettingSlice.actions.setMapSetting(region));
+  };
 
   useEffect(() => {
     if (isTracking) {
@@ -65,7 +83,11 @@ const ItemScreen = ({ navigation, route: { params } }) => {
   // renders
   return (
     <View style={styles.container}>
-      <MapView region={region} style={styles.mapContainer}>
+      <MapView
+        region={region}
+        style={styles.mapContainer}
+        onRegionChangeComplete={handleRegionChangeComplete}
+      >
         <Marker coordinate={params.userCoords} />
         <Marker coordinate={params.itemCoords} />
         {isFinding && (

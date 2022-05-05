@@ -14,10 +14,8 @@ export const itemListSelector = (state) => {
   return state.itemList;
 };
 
-export const getCurItem = (state, index) => {
-  // console.log(state.itemList[index]);
-  console.log(state);
-  console.log(index);
+export const mapSettingSelector = (state) => {
+  return state.mapSetting;
 };
 
 export const userSelector = (state) => {

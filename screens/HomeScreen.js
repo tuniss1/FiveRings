@@ -22,13 +22,14 @@ const HomeScreen = ({ navigation }) => {
 
   useEffect(() => {
     const getUserLocation = async () => {
-      setLoading(true);
+      // setLoading(true);
+
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         setErrorMsg("Permission to access location was denied");
         return;
       }
-      let location = await Location.getCurrentPositionAsync({});
+
       try {
         const value = await AsyncStorage.getItem("userCoords");
         console.log("Getting user coordinate ...");
@@ -36,34 +37,43 @@ const HomeScreen = ({ navigation }) => {
         if (value !== null) {
           // value previously stored
           const storageValue = JSON.parse(value);
+          dispatch(UserSlice.actions.updateUserLocation(storageValue));
+          let location = await Location.getCurrentPositionAsync({});
 
           if (
             storageValue.coords.latitude != location.coords.latitude ||
             storageValue.coords.longitude != loading.coords.longitude
           ) {
-            dispatch(UserSlice.actions.updateUserLocation(storageValue));
+            dispatch(UserSlice.actions.updateUserLocation(location));
           }
         } else {
+          let location = await Location.getCurrentPositionAsync({});
+
           try {
             console.log("Setting user coordinate");
             await AsyncStorage.setItem("userCoords", JSON.stringify(location));
           } catch (e) {
             console.log("Fail to set user coordinate");
           }
+
           dispatch(UserSlice.actions.updateUserLocation(location));
         }
       } catch (e) {
         // error reading value
         console.log("Fail to get user coordinate");
+        let location = await Location.getCurrentPositionAsync({});
+
         try {
           console.log("Setting user coordinate");
           await AsyncStorage.setItem("userCoords", JSON.stringify(location));
         } catch (e) {
           console.log("Fail to set user coordinate");
         }
+
         dispatch(UserSlice.actions.updateUserLocation(location));
       }
-      setLoading(false);
+
+      // setLoading(false);
     };
     getUserLocation();
   }, []);
@@ -117,7 +127,7 @@ const HomeScreen = ({ navigation }) => {
     });
   }, [user]);
 
-  if (loading) return <Text>Loading</Text>;
+  // if (loading) return <Text>Loading</Text>;
 
   return (
     <Home navigation={navigation} coords={user.coords} itemList={itemList} />
