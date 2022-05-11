@@ -19,6 +19,7 @@ const HomeScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const [errorMsg, setErrorMsg] = useState();
   const [loading, setLoading] = useState(false);
+  const [isInit, setIsInit] = useState(false);
 
   useEffect(() => {
     const getUserLocation = async () => {
@@ -86,7 +87,8 @@ const HomeScreen = ({ navigation }) => {
       const origin = user.coords;
       if (!origin) dispatch(ItemsSlice.actions.fetchItem(data));
       else {
-        dispatch(ItemsSlice.actions.resetState());
+        // dispatch(ItemsSlice.actions.resetState());
+        const temp = [];
         data.map(async (item) => {
           const destination = { latitude: item.lat, longitude: item.lng };
           const mode = "driving";
@@ -112,18 +114,27 @@ const HomeScreen = ({ navigation }) => {
             response.rows[0].elements[0].status == "OK"
           ) {
             console.log("Success getting location and distance.");
-            dispatch(
-              ItemsSlice.actions.addItem({
-                ...item,
-                distance: response.rows[0].elements[0].distance,
-                latestLocation: response.destination_addresses[0],
-              })
-            );
+            temp.push({
+              ...item,
+              distance: response.rows[0].elements[0].distance,
+              latestLocation: response.destination_addresses[0],
+            });
+            // dispatch(
+            //   ItemsSlice.actions.addItem({
+            //     ...item,
+            //     distance: response.rows[0].elements[0].distance,
+            //     latestLocation: response.destination_addresses[0],
+            //   })
+            // );
           } else {
             console.log("Fail to get location and distance.");
-            dispatch(ItemsSlice.actions.addItem({ ...item }));
+            temp.push({ ...item });
           }
+
+          dispatch(ItemsSlice.actions.fetchItem(temp));
         });
+
+        // setIsInit(false);
       }
     });
   }, [user]);
