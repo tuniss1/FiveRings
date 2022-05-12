@@ -87,8 +87,8 @@ const HomeScreen = ({ navigation }) => {
       const origin = user.coords;
       if (!origin) dispatch(ItemsSlice.actions.fetchItem(data));
       else {
-        // dispatch(ItemsSlice.actions.resetState());
         const temp = [];
+
         data.map(async (item) => {
           const destination = { latitude: item.lat, longitude: item.lng };
           const mode = "driving";
@@ -116,19 +116,13 @@ const HomeScreen = ({ navigation }) => {
             console.log("Success getting location and distance.");
             temp.push({
               ...item,
+              id: 1,
               distance: response.rows[0].elements[0].distance,
               latestLocation: response.destination_addresses[0],
             });
-            // dispatch(
-            //   ItemsSlice.actions.addItem({
-            //     ...item,
-            //     distance: response.rows[0].elements[0].distance,
-            //     latestLocation: response.destination_addresses[0],
-            //   })
-            // );
           } else {
             console.log("Fail to get location and distance.");
-            temp.push({ ...item });
+            temp.push({ ...item, id: 1 });
           }
 
           dispatch(ItemsSlice.actions.fetchItem(temp));

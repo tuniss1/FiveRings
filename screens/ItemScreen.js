@@ -41,11 +41,7 @@ const ItemScreen = ({ navigation, route: { params } }) => {
 
   // region start at user position
   const region = checkIsValid()
-    ? {
-        ...params.userCoords,
-        latitudeDelta: mapSetting.latitudeDelta,
-        longitudeDelta: mapSetting.longitudeDelta,
-      }
+    ? mapSetting
     : {
         ...params.userCoords,
         latitudeDelta: 0.01,
