@@ -24,7 +24,7 @@ import { mapSettingSelector } from "reduxTKit/selectors";
 
 import { updateControl } from "firebases/realtimeApi";
 
-const GOOGLE_MAPS_APIKEY = "AIzaSyAPpibb8QB3CR0B2m5ZBkBrRS75YluhNi8";
+const GOOGLE_MAPS_APIKEY = "AIzaSyDQHtaJFr0YC9d35d95TBw5IrglHr1ryg8";
 
 const ItemScreen = ({ navigation, route: { params } }) => {
   // Setup BottomSheet:

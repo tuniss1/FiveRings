@@ -9,7 +9,7 @@ import UserSlice from "reduxTKit/reducers/UserSlice";
 import ItemsSlice from "reduxTKit/reducers/ItemsSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const GOOGLE_MAPS_APIKEY = "AIzaSyAPpibb8QB3CR0B2m5ZBkBrRS75YluhNi8";
+const GOOGLE_MAPS_APIKEY = "AIzaSyDQHtaJFr0YC9d35d95TBw5IrglHr1ryg8";
 
 const HomeScreen = ({ navigation }) => {
   const db = getDatabase();

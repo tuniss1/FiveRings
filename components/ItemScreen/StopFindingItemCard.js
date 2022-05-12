@@ -11,7 +11,7 @@ const StopFindingItemCard = ({ setIsFinding }) => {
           style={styles.icon}
           color="#3F63DB"
         />
-        <Text style={styles.action}>Start finding item</Text>
+        <Text style={styles.action}>Stop finding item</Text>
       </View>
     </TouchableWithoutFeedback>
   );
