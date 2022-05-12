@@ -12,6 +12,14 @@ const TrackingNotification = ({ setShowNotify, itemNotify }) => {
     });
   };
 
+  const handleEnable = () => {
+    setShowNotify(false);
+    updateControl({
+      id: itemNotify.id,
+      mode: 2,
+    });
+  };
+
   return (
     <View style={styles.modalContainer}>
       <Surface style={styles.cardStyle}>
@@ -34,6 +42,7 @@ const TrackingNotification = ({ setShowNotify, itemNotify }) => {
               mode="contained"
               color="#f85454"
               style={{ marginHorizontal: 10 }}
+              onPress={handleEnable}
             >
               <Text style={{ color: "#ffffff" }}>Enable</Text>
             </Button>
