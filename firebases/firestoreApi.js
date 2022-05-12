@@ -90,3 +90,14 @@ export const updateUserAvatar = async (imgUrl, userId) => {
     userAvatar: imgUrl,
   });
 };
+export const signOutFunction = async () => {
+  const auth = getAuth();
+  signOut(auth)
+    .then(() => {
+      // Sign-out successful.
+    })
+    .catch((error) => {
+      // An error happened.
+      console.log(error);
+    });
+};
