@@ -20,7 +20,8 @@ const SignInScreen = ({ navigation, route }) => {
           <Image
             source={require("assets/icon-image.png")}
             style={{
-              marginLeft: 10,
+              marginTop: 20,
+              marginLeft: 20,
               marginBottom: 20,
               height: 100,
               width: 100,

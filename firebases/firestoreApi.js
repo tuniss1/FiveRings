@@ -4,16 +4,10 @@ import {
   setDoc,
   doc,
   getDoc,
-  getDocs,
   updateDoc,
-  collection,
-  query,
-  where,
-  addDoc,
-  deleteDoc,
 } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { getAuth } from "firebase/auth";
+import { getAuth, signOut } from "firebase/auth";
 
 const firestore = getFirestore();
 const storage = getStorage();

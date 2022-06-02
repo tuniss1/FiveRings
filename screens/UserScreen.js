@@ -102,6 +102,7 @@ const UserScreen = ({ navigation }) => {
                 onChangeText={onChangeText}
                 value={currUser.email}
                 outlineColor="#289cb4"
+                editable={false}
               />
             </View>
 
