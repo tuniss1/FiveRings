@@ -1,11 +1,10 @@
-import { View, Text, StyleSheet } from "react-native";
-import { Avatar } from "react-native-paper";
+import { View, Text, StyleSheet, Image } from "react-native";
 
 const ItemCard = ({ itemName, nailStatus }) => {
   return (
     <View style={styles.container}>
       <View style={styles.avatarWrapper}>
-        <Avatar.Image source={require("assets/item-icon.jpg")} />
+        <Image source={require("assets/item-icon.png")} style={{ width: 60 }} />
       </View>
       <View style={styles.infoWrapper}>
         <Text style={styles.nameText}>{itemName}</Text>
@@ -20,10 +19,12 @@ const ItemCard = ({ itemName, nailStatus }) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
+    alignItems: "flex-start",
     marginBottom: 20,
   },
   avatarWrapper: {
     marginRight: 10,
+    marginTop: -5,
   },
   infoWrapper: {
     flexDirection: "column",
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
   nameText: {
     color: "#565454",
     fontWeight: "700",
-    fontSize: 20,
+    fontSize: 18,
     marginBottom: 5,
   },
   nailText: {

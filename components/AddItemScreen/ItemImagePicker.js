@@ -39,7 +39,7 @@ const ItemImagePicker = ({ image, setImage, uid = "" }) => {
         <View>
           <Avatar.Image
             size={90}
-            source={image ? { uri: image } : require("assets/item-icon.jpg")}
+            source={image ? { uri: image } : require("assets/user-icon.png")}
             style={styles.itemImg}
           />
           <Avatar.Icon size={24} icon="camera" style={styles.iconSuffix} />

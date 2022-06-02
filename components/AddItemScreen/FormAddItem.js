@@ -1,17 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { TextInput, HelperText, Button } from "react-native-paper";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { addItem } from "firebases/realtimeApi";
 
-const FormAddItem = () => {
-  const [image, setImage] = useState(null);
-
+const FormAddItem = ({ onToggleSnackBar }) => {
   const itemSchema = Yup.object({
     itemName: Yup.string().required("Item's name is a required field."),
-    itemId: Yup.string()
-      .required("Item's id is a required field.")
-      .min(8, "Item's id must be at least 8 characters."),
+    itemId: Yup.number().required("Item's id is a required field."),
   });
 
   return (
@@ -20,8 +17,10 @@ const FormAddItem = () => {
         initialValues={{ itemName: "", itemId: "" }}
         validationSchema={itemSchema}
         onSubmit={(values, actions) => {
-          console.log(values);
+          addItem({ itemId: values.itemId, itemName: values.itemName });
           actions.setSubmitting(false);
+          actions.resetForm();
+          onToggleSnackBar();
         }}
         initialTouched={{
           itemName: false,
@@ -89,8 +88,8 @@ const styles = StyleSheet.create({
   },
   title: {},
   btnSubmit: {
-    paddingVertical: 3,
-    marginTop: 25,
+    padding: 5,
+    marginTop: 10,
   },
 });
 

@@ -1,36 +1,13 @@
-import React, {
-  useCallback,
-  useMemo,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  Dimensions,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
-import {
-  Title,
-  Button,
-  Paragraph,
-  Dialog,
-  Portal,
-  Provider,
-} from "react-native-paper";
+import React, { useMemo, useEffect, useRef, useState } from "react";
+import { View, Text, TextInput, StyleSheet, Dimensions } from "react-native";
+import { Title, Button, Paragraph, Dialog, Portal } from "react-native-paper";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import MapView, { Marker } from "react-native-maps";
-import FormAddItem from "components/AddItemScreen/FormAddItem";
 import {
   getUserInfo,
   getCurrentUser,
   signOutFunction,
 } from "firebases/firestoreApi";
-import { Formik } from "formik";
 import ItemImagePicker from "components/AddItemScreen/ItemImagePicker";
 import { useSelector, useDispatch } from "react-redux";
 import { mapSettingSelector, userSelector } from "reduxTKit/selectors";
@@ -107,7 +84,7 @@ const UserScreen = ({ navigation }) => {
           />
           <View style={{ paddingHorizontal: 15 }}>
             <View style={{ marginBottom: 8 }}>
-              <Text>Username:</Text>
+              <Text style={styles.title}>Username:</Text>
               <TextInput
                 style={styles.input}
                 mode="outlined"
@@ -118,7 +95,7 @@ const UserScreen = ({ navigation }) => {
             </View>
 
             <View style={{ marginBottom: 8 }}>
-              <Text>Email:</Text>
+              <Text style={styles.title}>Email:</Text>
               <TextInput
                 style={styles.input}
                 mode="outlined"
@@ -129,13 +106,14 @@ const UserScreen = ({ navigation }) => {
             </View>
 
             <View style={{ marginBottom: 8 }}>
-              <Text>UID:</Text>
+              <Text style={styles.title}>UID:</Text>
               <TextInput
                 style={styles.input}
                 mode="outlined"
                 onChangeText={onChangeText}
                 value={currUser.userId}
                 outlineColor="#289cb4"
+                editable={false}
               />
             </View>
             <View>
@@ -144,8 +122,8 @@ const UserScreen = ({ navigation }) => {
                 mode="contained"
                 style={{
                   paddingVertical: 3,
-                  marginHorizontal: 10,
-                  marginTop: 50,
+                  marginHorizontal: 5,
+                  marginTop: 30,
                 }}
               >
                 Sign Out
@@ -200,11 +178,13 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").height,
   },
   input: {
-    height: 40,
     margin: 12,
     borderWidth: 1,
-    padding: 10,
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+    marginHorizontal: 5,
     borderColor: "#289cb4",
+    borderRadius: 4,
   },
   bottomView: {
     flex: 1,
@@ -213,6 +193,9 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: "#E7E7E5",
     opacity: 0.5,
+  },
+  title: {
+    marginLeft: 5,
   },
 });
 

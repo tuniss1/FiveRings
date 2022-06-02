@@ -1,6 +1,6 @@
-import React, { useMemo, useRef } from "react";
-import { View, StyleSheet, Dimensions } from "react-native";
-import { Title, Avatar } from "react-native-paper";
+import React, { useState, useMemo, useRef } from "react";
+import { View, StyleSheet, Dimensions, Image } from "react-native";
+import { Title, Snackbar } from "react-native-paper";
 import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import MapView, { Marker } from "react-native-maps";
 import FormAddItem from "components/AddItemScreen/FormAddItem";
@@ -36,6 +36,11 @@ const AddItemScreen = ({ navigation }) => {
     dispatch(MapSettingSlice.actions.updateMapSetting(region));
   };
 
+  // Setup snackbar for add item:
+  const [visible, setVisible] = useState(false);
+  const onToggleSnackBar = () => setVisible(!visible);
+  const onDismissSnackBar = () => setVisible(false);
+
   // renders
   return (
     <View style={styles.container}>
@@ -59,15 +64,24 @@ const AddItemScreen = ({ navigation }) => {
             }}
           />
           <View style={styles.imgWrapper}>
-            <Avatar.Image
-              size={90}
-              source={require("assets/item-icon.jpg")}
-              style={styles.itemImg}
+            <Image
+              source={require("assets/item-icon.png")}
+              style={{ width: 100, height: 100 }}
             />
           </View>
-          <FormAddItem />
+          <FormAddItem onToggleSnackBar={onToggleSnackBar} />
         </BottomSheetView>
       </BottomSheet>
+      <Snackbar
+        visible={visible}
+        onDismiss={onDismissSnackBar}
+        action={{
+          label: "Close",
+          onPress: () => onToggleSnackBar(),
+        }}
+      >
+        Adding new item successfully!
+      </Snackbar>
     </View>
   );
 };
@@ -87,7 +101,6 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").height,
   },
   imgWrapper: {
-    paddingVertical: 15,
     alignItems: "center",
   },
   itemImg: {

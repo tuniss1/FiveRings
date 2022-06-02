@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { List } from "react-native-paper";
 
 const Item = ({ item, navigation, userCoords, index }) => {
@@ -24,19 +24,10 @@ const Item = ({ item, navigation, userCoords, index }) => {
         title={item.name}
         description={item.latestLocation}
         left={() => (
-          <View
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-              width: 50,
-            }}
-          >
-            <List.Icon
-              icon="devices"
-              style={{ backgroundColor: "#FFE8E8", borderRadius: 30 }}
-              color="#1674B3"
-            />
-          </View>
+          <Image
+            source={require("assets/item-icon.png")}
+            style={{ width: 60 }}
+          />
         )}
         right={() => (
           <View
