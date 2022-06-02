@@ -25,5 +25,5 @@ export const addItem = async ({ itemId, itemName }) => {
     mode: 0,
     name: itemName,
   });
-  return Promise.all(initItemControl, initItemSensor);
+  return Promise.all([initItemControl, initItemSensor]);
 };

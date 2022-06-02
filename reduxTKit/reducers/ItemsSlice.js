@@ -5,12 +5,26 @@ export default ItemsSlice = createSlice({
   initialState: [],
   reducers: {
     addItem: (state, action) => {
-      if (action.payload) state.push(action.payload);
+      let isAdded = false;
+      state.map((item) => {
+        if (item.id == action.payload.id) isAdded = true;
+      });
+
+      // if (action.payload) state.push(action.payload);
+      if (!isAdded) state.push(action.payload);
     }, // => { type: 'itemList/addItem' }
     fetchItem: (state, action) => {
-      if (action.payload) return action.payload;
+      return action.payload;
     }, // => { type: 'itemList/fetchItem' }
     resetState: (state, action) => [],
+    updateItem: (state, action) => {
+      const temp = state.map((item) => {
+        if (item.id == action.payload.id) return { ...item, ...action.payload };
+        return item;
+      });
+
+      return temp;
+    },
     // => { type: 'itemList/resetState' }
   },
 });

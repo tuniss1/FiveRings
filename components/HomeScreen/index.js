@@ -39,7 +39,7 @@ const Home = ({ navigation, coords, itemList }) => {
   useEffect(() => {
     const handleNotify = () => {
       for (const item of itemList) {
-        if (item.mode == 3) {
+        if (item && item.mode == 3) {
           setShowNotify(true);
           setItemNotify(item);
           break;
@@ -91,14 +91,20 @@ const Home = ({ navigation, coords, itemList }) => {
             <FlatList
               data={itemList}
               keyExtractor={(item, idx) => idx}
-              renderItem={({ item, index }) => (
-                <Item
-                  item={item}
-                  navigation={navigation}
-                  userCoords={coords}
-                  index={index}
-                />
-              )}
+              renderItem={({ item, index }) => {
+                if (!item) return;
+                // console.log("item");
+                // console.log(JSON.stringify(item));
+                return (
+                  // <></>
+                  <Item
+                    item={item}
+                    navigation={navigation}
+                    userCoords={coords}
+                    index={index}
+                  />
+                );
+              }}
             />
           </BottomSheetView>
         </BottomSheet>
